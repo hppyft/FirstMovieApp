@@ -47,7 +47,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
     public TextView releaseLabel;
     public TextView release;
     public TextView trailerLabel;
-    public TextView reviewLavel;
+    public TextView reviewLabel;
 
 
     public DetailFragment() {
@@ -60,7 +60,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         this.favoriteCheckBox = (CheckBox) rootView.findViewById(R.id.favorite_check_box);
         this.title = (TextView) rootView.findViewById(R.id.detail_title);
-//        title.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "primeLight.otf"));
         this.poster = ((ImageView) rootView.findViewById(R.id.detail_poster));
         this.overviewLabel = (TextView)rootView.findViewById(R.id.detail_overview_label);
         this.overview = (TextView) rootView.findViewById(R.id.detail_overview);
@@ -74,7 +73,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         mTrailerRecyclerAdapter = new TrailerListAdapter(getActivity());
         mTrailerRecyclerView.setAdapter(mTrailerRecyclerAdapter);
 
-        this.reviewLavel = (TextView) rootView.findViewById(R.id.detail_review_label);
+        this.reviewLabel = (TextView) rootView.findViewById(R.id.detail_review_label);
 
         mReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_review_list);
         mReviewRecyclerAdapter = new ReviewListAdapter (getActivity());
@@ -94,7 +93,9 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
 
         mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
 
-        showMovie(mMovie);
+        if(null!=mMovie) {
+            showMovie(mMovie);
+        }
 //        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
 //        rootView.setBackground(drawable);
 
@@ -134,7 +135,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         this.releaseLabel.setText(R.string.release_label);
         this.release.setText(movie.release_date);
         this.trailerLabel.setText(R.string.trailer_label);
-        this.reviewLavel.setText(R.string.detail_review_label);
+        this.reviewLabel.setText(R.string.detail_review_label);
         if (movie.favorite==1){
             this.favoriteCheckBox.setChecked(true);
         }
@@ -155,12 +156,16 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
 
     @Override
     public void updateTrailerList(TrailersAsyncTask trailersAsyncTask) {
-        mTrailerRecyclerAdapter.setTrailerList(trailersAsyncTask.mTrailerList.results);
+        if (mMovie!=null) {
+            mTrailerRecyclerAdapter.setTrailerList(trailersAsyncTask.mTrailerList.results);
+        }
     }
 
     @Override
     public void updateReviewList(ReviewAsyncTask reviewAsyncTask){
-        mReviewRecyclerAdapter.setReviewList(reviewAsyncTask.mReviewsList.results);
+        if (mMovie!=null) {
+            mReviewRecyclerAdapter.setReviewList(reviewAsyncTask.mReviewsList.results);
+        }
     }
 
     @Override

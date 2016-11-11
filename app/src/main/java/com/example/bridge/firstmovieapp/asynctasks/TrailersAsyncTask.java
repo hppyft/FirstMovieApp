@@ -29,7 +29,9 @@ public class TrailersAsyncTask extends AsyncTask<Void, Void, TrailerList> {
     @Override
     protected TrailerList doInBackground(Void... params) {
         try {
-            return getTrailerFromJson(mMovie.id);
+            if(mMovie!=null) {
+                return getTrailerFromJson(mMovie.id);
+            }
         } catch (IOException e){
             e.printStackTrace();
         }

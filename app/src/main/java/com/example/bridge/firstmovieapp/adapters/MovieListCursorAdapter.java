@@ -1,7 +1,6 @@
 package com.example.bridge.firstmovieapp.adapters;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.bridge.firstmovieapp.activities.DetailActivity;
+import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
-import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
-import com.example.bridge.firstmovieapp.R;
+import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
 import com.squareup.picasso.Picasso;
 
 
@@ -39,9 +37,7 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
         holder.mPosterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (activity, DetailActivity.class);
-                intent.putExtra(MovieDetailView.ARG_MOVIE, movie);
-                activity.startActivity(intent);
+                ((CallbackMovieClicked) activity).onItemSelected(movie);
             }
         });
         Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185"+movie.poster_path).into(holder.mPosterView);

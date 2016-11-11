@@ -29,7 +29,9 @@ public class ReviewAsyncTask extends AsyncTask<Void, Void, ReviewList> {
     @Override
     protected ReviewList doInBackground(Void... params){
         try{
-            return getReviewFromJson(mMovie.id);
+            if (mMovie!=null) {
+                return getReviewFromJson(mMovie.id);
+            }
         } catch (IOException e){
             e.printStackTrace();
         }

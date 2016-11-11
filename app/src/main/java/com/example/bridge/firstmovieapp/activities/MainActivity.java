@@ -8,44 +8,51 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
+import com.example.bridge.firstmovieapp.entities.Movie;
+import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
+import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
+import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallbackMovieClicked {
+
+    private boolean mTwoPane;
+    private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MovieListFragment())
-                    .commit();
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_detail) != null){
+            mTwoPane = true;
+            if(savedInstanceState==null){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_detail, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            }
         }
-        SyncAdapter.initializeSyncAdapter(this);
+        else{
+            mTwoPane=false;
+        }
 
-        /**
-         * Wanted to use a custom font, didn't work, later on I will try to configure it better
-         */
+        MovieListFragment movieListFragment = ((MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list));
+
+        SyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
@@ -54,12 +61,28 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Wanted to use a custom font, didn't work, later on I will try to configure it better
-     */
-
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    public void onItemSelected(Movie movie){
+        if (mTwoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(MovieDetailView.ARG_MOVIE, movie);
+
+            DetailFragment detailFragment = new DetailFragment();
+            detailFragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_detail, detailFragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        }
+        else {
+            Intent intent = new Intent(this, DetailActivity.class);
+            intent.putExtra(MovieDetailView.ARG_MOVIE, movie);
+            this.startActivity(intent);
+        }
     }
 }
