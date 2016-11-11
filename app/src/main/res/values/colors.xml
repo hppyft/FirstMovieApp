@@ -7,5 +7,9 @@
     <color name="title">#222222</color>
     <color name="transparent">#0000ff22</color>
     <color name="blue">#FF33B5E5</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="darkYellow">#ffd700</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
 
 </resources>

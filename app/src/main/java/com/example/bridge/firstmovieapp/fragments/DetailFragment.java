@@ -37,7 +37,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
     public RecyclerView mReviewRecyclerView;
     public ReviewListAdapter mReviewRecyclerAdapter;
 
-    public TextView favoriteLabel;
     public CheckBox favoriteCheckBox;
     public TextView title;
     public ImageView poster;
@@ -59,7 +58,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        this.favoriteLabel = (TextView) rootView.findViewById(R.id.detail_favorite_label);
         this.favoriteCheckBox = (CheckBox) rootView.findViewById(R.id.favorite_check_box);
         this.title = (TextView) rootView.findViewById(R.id.detail_title);
 //        title.setTypeface(Typeface.createFromAsset(getContext().getAssets(), "primeLight.otf"));
@@ -97,6 +95,8 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
 
         showMovie(mMovie);
+//        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
+//        rootView.setBackground(drawable);
 
         return rootView;
     }
@@ -124,7 +124,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
 
     @Override
     public void showMovie(Movie movie) {
-        this.favoriteLabel.setText(R.string.favorite_label);
+        this.favoriteCheckBox.setText(R.string.favorite_label);
         this.title.setText(movie.original_title);
         Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185"+movie.poster_path).into(this.poster);
         this.overviewLabel.setText(R.string.overview_label);

@@ -29,7 +29,7 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/item_height"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <CheckBox
@@ -53,7 +53,7 @@
 
                         android:layout_below="@id/favorite_check_box"
                         android:gravity="center_horizontal"
-                        android:paddingTop="@dimen/big_space_between_texts"
+                        android:paddingTop="@dimen/little_space_between_texts"
 
                         fontPath= "fonts/chunkfive_print.ttf"
                         android:textAllCaps="true"
@@ -75,7 +75,7 @@
 
                         android:layout_below="@id/detail_title"
                         android:layout_alignLeft="@id/favorite_check_box"
-                        android:paddingTop="@dimen/medium_space_between_texts"
+                        android:paddingTop="@dimen/little_space_between_texts"
 
                         fontPath= "fonts/chunkfive_print.ttf"
                         android:textAppearance="?android:textAppearance"/>
@@ -86,9 +86,8 @@
                         android:layout_height="wrap_content"
 
                         android:paddingLeft="@dimen/little_space_between_texts"
-                        android:layout_below="@id/detail_rate_label"
-                        android:layout_alignLeft="@id/detail_rate_label"
-                        android:paddingTop="@dimen/little_space_between_texts"
+                        android:layout_toRightOf="@id/detail_rate_label"
+                        android:layout_alignBaseline="@id/detail_rate_label"
 
                         android:textColor="@color/white"/>
 
@@ -97,9 +96,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:layout_below="@id/detail_rate"
-                        android:layout_alignLeft="@id/detail_rate"
-                        android:paddingTop="@dimen/medium_space_between_texts"
+                        android:paddingLeft="@dimen/big_space_between_texts"
+                        android:layout_toRightOf="@id/detail_rate"
+                        android:layout_alignBaseline="@id/detail_rate_label"
 
                         fontPath= "fonts/chunkfive_print.ttf"
                         android:textAppearance="?android:textAppearance"/>
@@ -110,11 +109,33 @@
                         android:layout_height="wrap_content"
 
                         android:paddingLeft="@dimen/little_space_between_texts"
-                        android:layout_below="@id/detail_release_label"
-                        android:layout_alignLeft="@id/detail_release_label"
-                        android:paddingTop="@dimen/little_space_between_texts"
+                        android:layout_toRightOf="@id/detail_release_label"
+                        android:layout_alignBaseline="@id/detail_rate_label"
 
                         android:textColor="@color/white"/>
+
+                    <TextView
+                        android:id="@+id/detail_overview_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/detail_rate_label"
+                        android:layout_alignLeft="@id/detail_rate_label"
+                        android:paddingTop="@dimen/little_space_between_texts"
+                        android:gravity="center_horizontal"
+
+                        fontPath= "fonts/chunkfive_print.ttf"
+                        android:textAppearance="?android:textAppearanceLarge"/>
+
+                    <TextView
+                        android:id="@+id/detail_overview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+
+                        android:layout_below="@id/detail_overview_label"
+                        android:layout_alignLeft="@id/detail_overview"
+
+                        android:textAppearance="?android:textAppearance"/>
                 </RelativeLayout>
 
 
@@ -128,24 +149,6 @@
                     android:paddingBottom="@dimen/no_space"/>
 
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/detail_overview_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:paddingTop="@dimen/medium_space_between_texts"
-                android:layout_gravity="center_horizontal"
-
-                fontPath= "fonts/chunkfive_print.ttf"
-                android:textAppearance="?android:textAppearanceLarge"/>
-
-            <TextView
-                android:id="@+id/detail_overview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:textAppearance="?android:textAppearance"/>
 
             <TextView
                 android:id="@+id/detail_trailer_label"
