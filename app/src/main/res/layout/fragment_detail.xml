@@ -1,0 +1,179 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools=" http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/cool_background_phone_size">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/item_height"
+                android:layout_weight="1">
+
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/favorite_check_box"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_favorite_label"
+
+                    android:layout_toRightOf="@id/favorite_check_box"
+                    android:paddingLeft="@dimen/little_space_between_texts"
+                    android:gravity="center_vertical"
+                    android:layout_alignBottom="@id/favorite_check_box"
+                    android:layout_alignTop="@id/favorite_check_box"
+
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearance"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_title"
+
+                    android:layout_below="@id/favorite_check_box"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/little_space_between_texts"
+
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/big_letter"
+                    android:textColor="@color/blue"
+                    />
+
+                <!--/Wanted to use a custom font, didn't work,
+                    later on I will try to configure it better
+                    fontPath= "fonts/primeRegular.otf"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_rate_label"
+
+                    android:layout_below="@id/detail_title"
+                    android:layout_alignLeft="@id/favorite_check_box"
+                    android:paddingTop="@dimen/little_space_between_texts"
+
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearance"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_rate"
+
+                    android:paddingLeft="@dimen/little_space_between_texts"
+                    android:layout_toRightOf="@id/detail_rate_label"
+                    android:layout_alignBottom="@id/detail_rate_label"
+
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearance"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_release_label"
+
+                    android:layout_below="@id/detail_rate_label"
+                    android:layout_alignLeft="@id/detail_rate_label"
+                    android:paddingTop="@dimen/little_space_between_texts"
+
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearance"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/detail_release"
+
+                    android:paddingLeft="@dimen/little_space_between_texts"
+                    android:layout_toRightOf="@id/detail_release_label"
+                    android:layout_alignBottom="@id/detail_release_label"
+
+                    android:fontFamily="sans-serif-condensed"
+                    android:textAppearance="?android:textAppearance"/>
+            </RelativeLayout>
+
+
+            <ImageView
+                android:layout_width="@dimen/item_width"
+                android:layout_height="@dimen/item_height"
+                android:id="@+id/detail_poster"
+                android:scaleType="fitXY" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_overview_label"
+
+            android:paddingTop="@dimen/medium_space_between_texts"
+
+            fontPath= "fonts/chunkfive_print.ttf"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_overview"
+
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearance"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_trailer_label"
+
+            android:paddingTop="@dimen/medium_space_between_texts"
+
+            fontPath= "fonts/chunkfive_print.ttf"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center_horizontal"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_trailer_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/detail_review_label"
+
+            fontPath= "fonts/chunkfive_print.ttf"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center_horizontal"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_review_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

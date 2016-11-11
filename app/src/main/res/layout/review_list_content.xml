@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/review_card_view"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+
+    android:layout_marginLeft="@dimen/big_space_between_texts"
+    android:layout_marginRight="@dimen/big_space_between_texts"
+    android:layout_marginTop="@dimen/medium_space_between_texts"
+
+    card_view:cardCornerRadius="@dimen/card_corner_radius"
+    card_view:cardElevation="@dimen/card_elevation" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/review_content"
+            android:src="@drawable/card_background"/>
+
+
+        <TextView
+            tools:text="Titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/review_author"
+            android:layout_marginTop="@dimen/little_space_between_texts"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:layout_gravity="center_horizontal"
+
+            android:background="@color/cardview_shadow_start_color"/>
+
+        <TextView
+            tools:text="Review"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/review_content"
+            android:layout_below="@id/review_author"
+            android:layout_gravity="start"
+            android:layout_marginTop="@dimen/little_space_between_texts"
+            android:fontFamily="sans-serif-condensed"
+            android:textAppearance="?android:textAppearance" />
+
+
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
