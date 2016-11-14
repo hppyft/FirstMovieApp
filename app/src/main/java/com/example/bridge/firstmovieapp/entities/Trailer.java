@@ -5,12 +5,14 @@ import android.os.Parcelable;
 
 public class Trailer implements Parcelable {
 
+    public String id;
     public String key;
 
     public Trailer(){
     }
 
     public Trailer (Parcel parcel){
+        this.id = parcel.readString();
         this.key = parcel.readString();
     }
 
@@ -22,6 +24,7 @@ public class Trailer implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(key);
     }
 

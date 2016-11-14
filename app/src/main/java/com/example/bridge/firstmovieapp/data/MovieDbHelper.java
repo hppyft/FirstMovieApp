@@ -5,6 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.bridge.firstmovieapp.data.MovieContract.MoviesEntry;
+import com.example.bridge.firstmovieapp.data.MovieContract.TrailersEntry;
+import com.example.bridge.firstmovieapp.data.MovieContract.ReviewsEntry;
+
+
+
 
 /**
  * Created by bridge on 03/11/2016.
@@ -35,6 +40,29 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MoviesEntry.COLUMN_FAVORITE + " INTEGER" +
                 " );";
 
+        final String SQL_CREATE_TRAILERS_TABLE = "CREATE TABLE " +
+                TrailersEntry.TABLE_NAME + " (" +
+                TrailersEntry.COLUMN_TRAILER_ID + " TEXT PRIMARY KEY," +
+                TrailersEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
+                TrailersEntry.COLUMN_TRAILER_PATH + " TEXT NOT NULL, " +
+                "FOREIGN KEY(" + TrailersEntry.COLUMN_MOVIE_ID + ") " +
+                "REFERENCES " + MoviesEntry.TABLE_NAME + "(" +
+                MoviesEntry.COLUMN_MOVIE_ID + ")" +
+                " );";
+
+        final String SQL_CREATE_REVIEWS_TABLE = "CREATE TABLE " +
+                ReviewsEntry.TABLE_NAME + " (" +
+                ReviewsEntry.COLUMN_REVIEW_ID + " TEXT PRIMARY KEY," +
+                ReviewsEntry.COLUMN_MOVIE_ID + " TEXT NOT NULL, " +
+                ReviewsEntry.COLUMN_AUTHOR + " TEXT NOT NULL, " +
+                ReviewsEntry.COLUMN_CONTENT + " TEXT NOT NULL, " +
+                "FOREIGN KEY(" + ReviewsEntry.COLUMN_MOVIE_ID + ") " +
+                "REFERENCES " + MoviesEntry.TABLE_NAME + "(" +
+                MoviesEntry.COLUMN_MOVIE_ID + ")" +
+                " );";
+
+        sqLiteDatabase.execSQL(SQL_CREATE_TRAILERS_TABLE);
+        sqLiteDatabase.execSQL(SQL_CREATE_REVIEWS_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_MOVIES_TABLE);
     }
 
@@ -43,9 +71,11 @@ public class MovieDbHelper extends SQLiteOpenHelper {
         /**
          * I don't want to wipe all the stored data
          * because I don't want the users to lose their favorite's list
-         * so I'm commenting the next two lines
+         * so I'm commenting the next line
          */
 //        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + MoviesEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TrailersEntry.TABLE_NAME);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + ReviewsEntry.TABLE_NAME);
         onCreate(sqLiteDatabase);
     }
 }

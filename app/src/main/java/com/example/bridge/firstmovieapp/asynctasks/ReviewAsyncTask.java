@@ -40,7 +40,7 @@ public class ReviewAsyncTask extends AsyncTask<Void, Void, ReviewList> {
 
     @Override
     protected void onPostExecute (ReviewList results){
-        mFragmentInterface.updateReviewList(this);
+        mFragmentInterface.updateReviewList(results);
     }
 
     private ReviewList getReviewFromJson(String id) throws IOException{

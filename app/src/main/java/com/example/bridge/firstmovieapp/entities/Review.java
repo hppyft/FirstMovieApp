@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 public class Review implements Parcelable{
 
+    public String id;
     public String author;
     public String content;
 
@@ -12,6 +13,7 @@ public class Review implements Parcelable{
     }
 
     public Review (Parcel parcel) {
+        this.id = parcel.readString();
         this.author = parcel.readString();
         this.content = parcel.readString();
     }
@@ -23,6 +25,7 @@ public class Review implements Parcelable{
 
     @Override
     public void writeToParcel (Parcel dest, int flags) {
+        dest.writeString(id);
         dest.writeString(author);
         dest.writeString(content);
     }

@@ -1,6 +1,7 @@
 package com.example.bridge.firstmovieapp.fragments;
 
 import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -17,12 +18,13 @@ import android.widget.TextView;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.ReviewListAdapter;
 import com.example.bridge.firstmovieapp.adapters.TrailerListAdapter;
-import com.example.bridge.firstmovieapp.asynctasks.ReviewAsyncTask;
-import com.example.bridge.firstmovieapp.asynctasks.TrailersAsyncTask;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
+import com.example.bridge.firstmovieapp.entities.ReviewList;
+import com.example.bridge.firstmovieapp.entities.TrailerList;
 import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 import com.example.bridge.firstmovieapp.interfaces.OnMovieSelectedListener;
+import com.example.bridge.firstmovieapp.syncservice.ReviewAndTrailerService;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -148,28 +150,36 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
             this.favoriteCheckBox.setChecked(false);
         }
         else{
-            System.out.println("O VALOR DE FAVORITE EH"+movie.favorite);
+            System.out.println("THE VALUE OF FAVORITE OBJECT IS "+movie.favorite);
         }
     }
 
     public void startUpdaters(){
-        TrailersAsyncTask trailersAsyncTask = new TrailersAsyncTask(this, getContext(), mMovie);
-        trailersAsyncTask.execute();
-        ReviewAsyncTask reviewAsyncTask = new ReviewAsyncTask(this, getContext(), mMovie);
-        reviewAsyncTask.execute();
-    }
-
-    @Override
-    public void updateTrailerList(TrailersAsyncTask trailersAsyncTask) {
-        if (mMovie!=null) {
-            mTrailerRecyclerAdapter.setTrailerList(trailersAsyncTask.mTrailerList.results);
+        /**
+         * Here we will replace the AsyncTask with a IntentService
+         */
+//        TrailersAsyncTask trailersAsyncTask = new TrailersAsyncTask(this, getContext(), mMovie);
+//        trailersAsyncTask.execute();
+//        ReviewAsyncTask reviewAsyncTask = new ReviewAsyncTask(this, getContext(), mMovie);
+//        reviewAsyncTask.execute();
+        if(null!=mMovie) {
+            Intent intent = new Intent();
+            intent.putExtra(ARG_MOVIE, mMovie);
+            new ReviewAndTrailerService("service", this).startService(intent);
         }
     }
 
     @Override
-    public void updateReviewList(ReviewAsyncTask reviewAsyncTask){
-        if (mMovie!=null) {
-            mReviewRecyclerAdapter.setReviewList(reviewAsyncTask.mReviewsList.results);
+    public void updateTrailerList(TrailerList trailerList) {
+        if (trailerList!=null) {
+            mTrailerRecyclerAdapter.setTrailerList(trailerList);
+        }
+    }
+
+    @Override
+    public void updateReviewList(ReviewList reviewList){
+        if (reviewList!=null) {
+            mReviewRecyclerAdapter.setReviewList(reviewList);
         }
     }
 

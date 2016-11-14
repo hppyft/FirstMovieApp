@@ -40,7 +40,7 @@ public class TrailersAsyncTask extends AsyncTask<Void, Void, TrailerList> {
 
     @Override
     protected void onPostExecute (TrailerList results){
-        mFragmentInterface.updateTrailerList(this);
+        mFragmentInterface.updateTrailerList(results);
     }
 
     private TrailerList getTrailerFromJson(String id) throws IOException {

@@ -7,8 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.bridge.firstmovieapp.entities.Review;
 import com.example.bridge.firstmovieapp.R;
+import com.example.bridge.firstmovieapp.entities.Review;
+import com.example.bridge.firstmovieapp.entities.ReviewList;
 
 import java.util.List;
 
@@ -42,8 +43,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         return 0;
     }
 
-    public void setReviewList(List<Review> reviewList){
-        this.reviewList=reviewList;
+    public void setReviewList(ReviewList reviewList){
+        this.reviewList=reviewList.results;
         notifyDataSetChanged();
     }
 

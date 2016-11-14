@@ -9,8 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.bridge.firstmovieapp.entities.Trailer;
 import com.example.bridge.firstmovieapp.R;
+import com.example.bridge.firstmovieapp.entities.Trailer;
+import com.example.bridge.firstmovieapp.entities.TrailerList;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -62,8 +63,8 @@ public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.
         return 0;
     }
 
-    public void setTrailerList(List<Trailer> trailerList){
-        this.trailerList=trailerList;
+    public void setTrailerList(TrailerList trailerList){
+        this.trailerList=trailerList.results;
         notifyDataSetChanged();
     }
 
