@@ -20,4 +20,5 @@
     <string name="detail_review_label">Reviews</string>
     <string name="content_authority">com.example.bridge.firstmovieapp</string>
     <string name="sync_account_type">bridge.example.com</string>
+    <string name="movie_list_width">match parent</string>
 </resources>

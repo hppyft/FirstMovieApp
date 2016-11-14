@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.example.bridge.firstmovieapp.activities.SettingsActivity;
-import com.example.bridge.firstmovieapp.interfaces.onSettingsChanged;
+import com.example.bridge.firstmovieapp.interfaces.OnSettingsChanged;
 
 
 public class SettingsChangedBroadcastReceiver extends BroadcastReceiver {
 
-    private onSettingsChanged mOnSettingsChanged;
+    private OnSettingsChanged mOnSettingsChanged;
     public boolean registered;
 
     public void register (Context context){
@@ -34,8 +34,8 @@ public class SettingsChangedBroadcastReceiver extends BroadcastReceiver {
         }
     }
 
-    public SettingsChangedBroadcastReceiver(onSettingsChanged onSettingsChanged) {
-        mOnSettingsChanged = onSettingsChanged;
+    public SettingsChangedBroadcastReceiver(OnSettingsChanged OnSettingsChanged) {
+        mOnSettingsChanged = OnSettingsChanged;
     }
 
     @Override

@@ -26,11 +26,11 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (getSupportFragmentManager().findFragmentById(R.id.fragment_detail) != null){
+        if (findViewById(R.id.fragment_detail_container) != null){
             mTwoPane = true;
             if(savedInstanceState==null){
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_detail, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .replace(R.id.fragment_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
             }
         }
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             detailFragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_detail, detailFragment, DETAILFRAGMENT_TAG)
+                    .replace(R.id.fragment_detail_container, detailFragment, DETAILFRAGMENT_TAG)
                     .commit();
         }
         else {

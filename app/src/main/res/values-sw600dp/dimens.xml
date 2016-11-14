@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_height">270dp</dimen>
+    <dimen name="item_width">180dp</dimen>
+    <dimen name="smallest_readable_letter">20dp</dimen>
+    <dimen name="medium_letter">30dp</dimen>
+</resources>

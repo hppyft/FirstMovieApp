@@ -50,7 +50,8 @@
             android:layout_gravity="start"
             android:layout_marginTop="@dimen/little_space_between_texts"
             android:fontFamily="sans-serif-condensed"
-            android:textAppearance="?android:textAppearance" />
+            android:textAppearance="?android:textAppearance"
+            android:textSize="@dimen/smallest_readable_letter"/>
 
 
 

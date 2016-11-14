@@ -57,7 +57,7 @@
 
                         fontPath= "fonts/chunkfive_print.ttf"
                         android:textAllCaps="true"
-                        android:textSize="@dimen/big_space_between_texts"
+                        android:textSize="@dimen/medium_letter"
                         android:textColor="@color/blue"
                         android:shadowColor="@color/black"
                         android:shadowDx="0.0"
@@ -76,9 +76,11 @@
                         android:layout_below="@id/detail_title"
                         android:layout_alignLeft="@id/favorite_check_box"
                         android:paddingTop="@dimen/medium_space_between_texts"
+                        android:paddingLeft="@dimen/little_space_between_texts"
 
                         fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearance"/>
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="@dimen/smallest_readable_letter"/>
 
                     <TextView
                         android:id="@+id/detail_rate"
@@ -90,7 +92,8 @@
                         android:layout_alignLeft="@id/detail_rate_label"
                         android:paddingTop="@dimen/little_space_between_texts"
 
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/smallest_readable_letter"/>
 
                     <TextView
                         android:id="@+id/detail_release_label"
@@ -100,9 +103,11 @@
                         android:layout_below="@id/detail_rate"
                         android:layout_alignLeft="@id/detail_rate"
                         android:paddingTop="@dimen/medium_space_between_texts"
+                        android:paddingLeft="@dimen/little_space_between_texts"
 
                         fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearance"/>
+                        android:textAppearance="?android:textAppearance"
+                        android:textSize="@dimen/smallest_readable_letter"/>
 
                     <TextView
                         android:id="@+id/detail_release"
@@ -114,7 +119,8 @@
                         android:layout_alignLeft="@id/detail_release_label"
                         android:paddingTop="@dimen/little_space_between_texts"
 
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/smallest_readable_letter"/>
                 </RelativeLayout>
 
 
@@ -123,7 +129,7 @@
                     android:layout_width="@dimen/detail_poster_item_width"
                     android:layout_height="@dimen/detail_poster_item_height"
 
-                    android:scaleType="centerCrop"
+                    android:scaleType="fitXY"
                     android:cropToPadding="true"
                     android:paddingBottom="@dimen/no_space"/>
 
@@ -145,7 +151,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
-                android:textAppearance="?android:textAppearance"/>
+                android:textAppearance="?android:textAppearance"
+                android:textSize="@dimen/smallest_readable_letter"/>
 
             <TextView
                 android:id="@+id/detail_trailer_label"
@@ -154,6 +161,7 @@
 
                 android:paddingTop="@dimen/medium_space_between_texts"
                 android:layout_gravity="center_horizontal"
+                android:paddingLeft="@dimen/little_space_between_texts"
 
                 fontPath= "fonts/chunkfive_print.ttf"
                 android:textAppearance="?android:textAppearanceLarge"/>

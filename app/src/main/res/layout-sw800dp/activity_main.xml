@@ -11,7 +11,14 @@
     <fragment
         android:id="@+id/fragment_movie_list"
         android:name="com.example.bridge.firstmovieapp.fragments.MovieListFragment"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        tools:layout="@android:layout/list_content"/>
+        tools:layout="@android:layout/list_content"
+        android:layout_weight="0"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_detail_container"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 </LinearLayout>

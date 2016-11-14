@@ -20,10 +20,10 @@ import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.MovieListCursorAdapter;
 import com.example.bridge.firstmovieapp.broadcastreceivers.SettingsChangedBroadcastReceiver;
 import com.example.bridge.firstmovieapp.data.MovieContract.MoviesEntry;
-import com.example.bridge.firstmovieapp.interfaces.onSettingsChanged;
+import com.example.bridge.firstmovieapp.interfaces.OnSettingsChanged;
 import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
-public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, onSettingsChanged {
+public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnSettingsChanged {
 
     private RecyclerView mRecyclerView;
     public MovieListCursorAdapter mRecyclerCursorAdapter;

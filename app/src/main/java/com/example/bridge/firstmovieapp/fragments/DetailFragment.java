@@ -91,8 +91,13 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
             }
         });
 
-        mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
-
+        if (getActivity().getIntent()!=null) {
+            mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
+        }
+        Bundle args = getArguments();
+        if (args != null){
+            mMovie = args.getParcelable(MovieDetailView.ARG_MOVIE);
+        }
         if(null!=mMovie) {
             showMovie(mMovie);
         }

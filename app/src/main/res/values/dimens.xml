@@ -12,7 +12,11 @@
     <dimen name="big_space_between_texts">20dp</dimen>
     <dimen name="card_corner_radius">3dp</dimen>
     <dimen name="card_elevation">5dp</dimen>
+    <dimen name="small_letter">10dp</dimen>
+    <dimen name="small_to_medium_letter">15dp</dimen>
+    <dimen name="medium_letter">20dp</dimen>
     <dimen name="big_letter">30dp</dimen>
     <dimen name="mini_space_between_texts">3dp</dimen>
     <dimen name="no_space">0dp</dimen>
+    <dimen name="smallest_readable_letter">15dp</dimen>
 </resources>
