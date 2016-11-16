@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.entities.Movie;
+import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
 import com.squareup.picasso.Picasso;
@@ -40,7 +42,14 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
                 ((CallbackMovieClicked) activity).onItemSelected(movie);
             }
         });
-        Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185"+movie.poster_path).into(holder.mPosterView);
+        Utility ut = new Utility(activity);
+        if(ut.isConnectionAvailable()) {
+            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + movie.poster_path).into(holder.mPosterView);
+        }
+        else{
+            holder.mPosterView.setImageResource(R.drawable.blank_poster);
+            holder.mTitleView.setText(movie.original_title);
+        }
     }
 
     private Movie getItem(int position) {
@@ -72,10 +81,12 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final ImageView mPosterView;
+        public final TextView mTitleView;
 
         public ViewHolder(View view) {
             super(view);
             mPosterView = (ImageView) view.findViewById(R.id.poster);
+            mTitleView = (TextView) view.findViewById(R.id.title);
         }
     }
 }

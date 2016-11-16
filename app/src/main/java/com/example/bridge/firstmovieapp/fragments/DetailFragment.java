@@ -127,6 +127,8 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         if(null!=mMovie) {
             showMovie(mMovie);
             startUpdaters();
+            updateTrailerList();
+            updateReviewList();
         }
 //        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
 //        rootView.setBackground(drawable);

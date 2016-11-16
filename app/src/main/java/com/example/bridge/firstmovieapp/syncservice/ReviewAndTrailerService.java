@@ -11,6 +11,7 @@ import com.example.bridge.firstmovieapp.entities.Review;
 import com.example.bridge.firstmovieapp.entities.ReviewList;
 import com.example.bridge.firstmovieapp.entities.Trailer;
 import com.example.bridge.firstmovieapp.entities.TrailerList;
+import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
 
 import java.io.IOException;
@@ -36,36 +37,38 @@ public class ReviewAndTrailerService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        mMovie = intent.getParcelableExtra(ARG_MOVIE);
-        IFetchDataFromMovieDB fetchDataFromMovieDB = retrofit.create(IFetchDataFromMovieDB.class);
-        Call<TrailerList> trailerCall = fetchDataFromMovieDB.getTrailerKey(mMovie.id);
-        try {
-            mTrailerList = trailerCall.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Call<ReviewList> reviewCall = fetchDataFromMovieDB.getReviews(mMovie.id);
-        try {
-            mReviewList = reviewCall.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(Utility.isInternetAvailable()) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://api.themoviedb.org/3/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            mMovie = intent.getParcelableExtra(ARG_MOVIE);
+            IFetchDataFromMovieDB fetchDataFromMovieDB = retrofit.create(IFetchDataFromMovieDB.class);
+            Call<TrailerList> trailerCall = fetchDataFromMovieDB.getTrailerKey(mMovie.id);
+            try {
+                mTrailerList = trailerCall.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Call<ReviewList> reviewCall = fetchDataFromMovieDB.getReviews(mMovie.id);
+            try {
+                mReviewList = reviewCall.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        if (null!=mReviewList) {
-            updateReviewsDB(mReviewList);
-            Intent ReviewBroadcastIntent = new Intent();
-            ReviewBroadcastIntent.setAction(REVIEW_CHANGED);
-            getBaseContext().sendBroadcast(ReviewBroadcastIntent);
-        }
-        if (null!=mTrailerList) {
-            updateTrailersDB(mTrailerList);
-            Intent TrailerBroadcastIntent = new Intent();
-            TrailerBroadcastIntent.setAction(TRAILER_CHANGED);
-            getBaseContext().sendBroadcast(TrailerBroadcastIntent);
+            if (null != mReviewList) {
+                updateReviewsDB(mReviewList);
+                Intent ReviewBroadcastIntent = new Intent();
+                ReviewBroadcastIntent.setAction(REVIEW_CHANGED);
+                getBaseContext().sendBroadcast(ReviewBroadcastIntent);
+            }
+            if (null != mTrailerList) {
+                updateTrailersDB(mTrailerList);
+                Intent TrailerBroadcastIntent = new Intent();
+                TrailerBroadcastIntent.setAction(TRAILER_CHANGED);
+                getBaseContext().sendBroadcast(TrailerBroadcastIntent);
+            }
         }
     }
 
