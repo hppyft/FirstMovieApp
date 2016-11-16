@@ -12,7 +12,6 @@ import com.example.bridge.firstmovieapp.entities.ReviewList;
 import com.example.bridge.firstmovieapp.entities.Trailer;
 import com.example.bridge.firstmovieapp.entities.TrailerList;
 import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
-import com.example.bridge.firstmovieapp.interfaces.OnMovieSelectedListener;
 
 import java.io.IOException;
 
@@ -20,23 +19,19 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.bridge.firstmovieapp.fragments.DetailFragment.REVIEW_CHANGED;
+import static com.example.bridge.firstmovieapp.fragments.DetailFragment.TRAILER_CHANGED;
 import static com.example.bridge.firstmovieapp.interfaces.MovieDetailView.ARG_MOVIE;
 
 public class ReviewAndTrailerService extends IntentService {
 
-    private OnMovieSelectedListener mListener;
-
     public TrailerList mTrailerList;
     public ReviewList mReviewList;
     private Movie mMovie;
+    private static String mName = "service";
 
-    public ReviewAndTrailerService(String name) {
-        super(name);
-    }
-
-    public ReviewAndTrailerService(String name, OnMovieSelectedListener listener) {
-        super(name);
-        mListener = listener;
+    public ReviewAndTrailerService(){
+        super(mName);
     }
 
     @Override
@@ -60,17 +55,17 @@ public class ReviewAndTrailerService extends IntentService {
             e.printStackTrace();
         }
 
-        /**
-         * HERE WE NEED TO NOTIFY THAT THE TRAILER+REVIEWS ARE READY
-         */
-
         if (null!=mReviewList) {
             updateReviewsDB(mReviewList);
-            mListener.updateReviewList(mReviewList);
+            Intent ReviewBroadcastIntent = new Intent();
+            ReviewBroadcastIntent.setAction(REVIEW_CHANGED);
+            getBaseContext().sendBroadcast(ReviewBroadcastIntent);
         }
         if (null!=mTrailerList) {
             updateTrailersDB(mTrailerList);
-            mListener.updateTrailerList(mTrailerList);
+            Intent TrailerBroadcastIntent = new Intent();
+            TrailerBroadcastIntent.setAction(TRAILER_CHANGED);
+            getBaseContext().sendBroadcast(TrailerBroadcastIntent);
         }
     }
 
@@ -84,15 +79,17 @@ public class ReviewAndTrailerService extends IntentService {
 
             Cursor cursor = getBaseContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
                     null,
-                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+" = ? " +
-                            MovieContract.ReviewsEntry.COLUMN_REVIEW_ID + " = ? ",
+                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? " +
+                            "AND " +
+                            MovieContract.ReviewsEntry.COLUMN_REVIEW_ID + "=?",
                     new String[]{mMovie.id, iterator.id},
                     null);
             if (cursor.getCount()!=0){
                 getBaseContext().getContentResolver().update(MovieContract.ReviewsEntry.CONTENT_URI,
                         reviewValues,
-                        MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+" = ? " +
-                                MovieContract.ReviewsEntry.COLUMN_REVIEW_ID + " = ? ",
+                        MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? " +
+                                "AND " +
+                                MovieContract.ReviewsEntry.COLUMN_REVIEW_ID + "=?",
                         new String[]{mMovie.id, iterator.id});
             }
             else{
@@ -111,15 +108,17 @@ public class ReviewAndTrailerService extends IntentService {
 
             Cursor cursor = getBaseContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
                     null,
-                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+" = ? " +
-                            MovieContract.TrailersEntry.COLUMN_TRAILER_ID + " = ? ",
+                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? " +
+                            "AND " +
+                            MovieContract.TrailersEntry.COLUMN_TRAILER_ID + "=?",
                     new String[]{mMovie.id, iterator.id},
                     null);
             if (cursor.getCount()!=0){
                 getBaseContext().getContentResolver().update(MovieContract.TrailersEntry.CONTENT_URI,
                         trailersValues,
-                        MovieContract.TrailersEntry.COLUMN_MOVIE_ID+" = ? " +
-                                MovieContract.TrailersEntry.COLUMN_TRAILER_ID + " = ? ",
+                        MovieContract.TrailersEntry.COLUMN_MOVIE_ID+"=? " +
+                                "AND " +
+                                MovieContract.TrailersEntry.COLUMN_TRAILER_ID + "=?",
                         new String[]{mMovie.id, iterator.id});
             }
             else{

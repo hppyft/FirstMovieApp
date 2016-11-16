@@ -59,6 +59,8 @@ public class Provider extends ContentProvider{
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
         matcher.addURI(authority, MovieContract.PATH_MOVIES, MOVIE);
+        matcher.addURI(authority, MovieContract.PATH_TRAILERS, TRAILER);
+        matcher.addURI(authority, MovieContract.PATH_REVIEWS, REVIEW);
 
         return matcher;
     }

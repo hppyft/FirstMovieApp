@@ -2,6 +2,7 @@ package com.example.bridge.firstmovieapp.fragments;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -16,14 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bridge.firstmovieapp.R;
-import com.example.bridge.firstmovieapp.adapters.ReviewListAdapter;
-import com.example.bridge.firstmovieapp.adapters.TrailerListAdapter;
+import com.example.bridge.firstmovieapp.adapters.ReviewListCursorAdapter;
+import com.example.bridge.firstmovieapp.adapters.TrailerListCursorAdapter;
+import com.example.bridge.firstmovieapp.broadcastreceivers.ReviewListChangedBroadcasReceiver;
+import com.example.bridge.firstmovieapp.broadcastreceivers.TrailerListChangedBroadcasReceiver;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
-import com.example.bridge.firstmovieapp.entities.ReviewList;
-import com.example.bridge.firstmovieapp.entities.TrailerList;
 import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
-import com.example.bridge.firstmovieapp.interfaces.OnMovieSelectedListener;
+import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
+import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
 import com.example.bridge.firstmovieapp.syncservice.ReviewAndTrailerService;
 import com.squareup.picasso.Picasso;
 
@@ -31,13 +33,33 @@ import com.squareup.picasso.Picasso;
  * Created by bridge on 18/10/2016.
  */
 
-public class DetailFragment extends Fragment implements MovieDetailView, OnMovieSelectedListener {
+public class DetailFragment extends Fragment implements MovieDetailView, OnTrailerListChanged, OnReviewListChanged {
+
+    public TrailerListChangedBroadcasReceiver mTrailerListChangedBroadcasReceiver;
+    public static final String TRAILER_CHANGED = "trailer_changed";
+    public static final int COL_TRAILER_ID = 0;
+    public static final int COL_TRAILER_KEY = 1;
+    private static final String[] TRAILER_LIST_COLUMNS = {
+            MovieContract.TrailersEntry.TABLE_NAME + "." +
+                    MovieContract.TrailersEntry.COLUMN_TRAILER_ID,
+            MovieContract.TrailersEntry.COLUMN_TRAILER_PATH};
+
+    public ReviewListChangedBroadcasReceiver mReviewListChangedBroadcasReceiver;
+    public static final String REVIEW_CHANGED = "review_changed";
+    public static final int COL_REVIEW_ID = 0;
+    public static final int COL_REVIEW_AUTHOR = 1;
+    public static final int COL_REVIEW_CONTENT = 2;
+    private static final String[] REVIEW_LIST_COLUMNS = {
+            MovieContract.ReviewsEntry.TABLE_NAME + "." +
+                    MovieContract.ReviewsEntry.COLUMN_REVIEW_ID,
+            MovieContract.ReviewsEntry.COLUMN_AUTHOR,
+            MovieContract.ReviewsEntry.COLUMN_CONTENT};
 
     public Movie mMovie;
     public RecyclerView mTrailerRecyclerView;
-    public TrailerListAdapter mTrailerRecyclerAdapter;
+    public TrailerListCursorAdapter mTrailerRecyclerAdapter;
     public RecyclerView mReviewRecyclerView;
-    public ReviewListAdapter mReviewRecyclerAdapter;
+    public ReviewListCursorAdapter mReviewRecyclerAdapter;
 
     public CheckBox favoriteCheckBox;
     public TextView title;
@@ -54,6 +76,8 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
 
     public DetailFragment() {
         setHasOptionsMenu(true);
+        mTrailerListChangedBroadcasReceiver = new TrailerListChangedBroadcasReceiver(this);
+        mReviewListChangedBroadcasReceiver = new ReviewListChangedBroadcasReceiver(this);
     }
 
     @Override
@@ -72,13 +96,13 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         this.trailerLabel = (TextView) rootView.findViewById(R.id.detail_trailer_label);
 
         mTrailerRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_trailer_list);
-        mTrailerRecyclerAdapter = new TrailerListAdapter(getActivity());
+        mTrailerRecyclerAdapter = new TrailerListCursorAdapter(getActivity());
         mTrailerRecyclerView.setAdapter(mTrailerRecyclerAdapter);
 
         this.reviewLabel = (TextView) rootView.findViewById(R.id.detail_review_label);
 
         mReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_review_list);
-        mReviewRecyclerAdapter = new ReviewListAdapter (getActivity());
+        mReviewRecyclerAdapter = new ReviewListCursorAdapter(getActivity());
         mReviewRecyclerView.setAdapter(mReviewRecyclerAdapter);
 
         this.favoriteCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -102,6 +126,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
         }
         if(null!=mMovie) {
             showMovie(mMovie);
+            startUpdaters();
         }
 //        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
 //        rootView.setBackground(drawable);
@@ -122,12 +147,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_detail_fragment, menu);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        startUpdaters();
     }
 
     @Override
@@ -163,29 +182,46 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnMovie
 //        ReviewAsyncTask reviewAsyncTask = new ReviewAsyncTask(this, getContext(), mMovie);
 //        reviewAsyncTask.execute();
         if(null!=mMovie) {
-            Intent intent = new Intent();
+            Intent intent = new Intent(getContext(), ReviewAndTrailerService.class);
             intent.putExtra(ARG_MOVIE, mMovie);
-            new ReviewAndTrailerService("service", this).startService(intent);
+            getActivity().startService(intent);
         }
     }
 
     @Override
-    public void updateTrailerList(TrailerList trailerList) {
-        if (trailerList!=null) {
-            mTrailerRecyclerAdapter.setTrailerList(trailerList);
-        }
+    public void updateTrailerList() {
+        Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
+                TRAILER_LIST_COLUMNS,
+                MovieContract.TrailersEntry.COLUMN_MOVIE_ID+"=? ",
+                new String[]{mMovie.id},
+                null);
+
+        mTrailerRecyclerAdapter.setMovieCursor(cursor);
     }
 
     @Override
-    public void updateReviewList(ReviewList reviewList){
-        if (reviewList!=null) {
-            mReviewRecyclerAdapter.setReviewList(reviewList);
-        }
+    public void updateReviewList(){
+        Cursor cursor = getContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
+                REVIEW_LIST_COLUMNS,
+                MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? ",
+                new String[]{mMovie.id},
+                null);
+
+        mReviewRecyclerAdapter.setMovieCursor(cursor);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mTrailerListChangedBroadcasReceiver.register(getContext());
+        mReviewListChangedBroadcasReceiver.register(getContext());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTrailerListChangedBroadcasReceiver.unregister(getContext());
+        mReviewListChangedBroadcasReceiver.unregister(getContext());
     }
 }

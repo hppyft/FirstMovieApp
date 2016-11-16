@@ -2,6 +2,7 @@ package com.example.bridge.firstmovieapp.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,21 +12,19 @@ import android.widget.ImageView;
 
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.entities.Trailer;
-import com.example.bridge.firstmovieapp.entities.TrailerList;
+import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 /**
  * Created by bridge on 31/10/2016.
  */
 
-public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.ViewHolder>{
+public class TrailerListCursorAdapter extends RecyclerView.Adapter<TrailerListCursorAdapter.ViewHolder>{
 
-    private List<Trailer> trailerList;
+    private Cursor mCursor;
     public Activity activity;
 
-    public TrailerListAdapter(Activity activity) {
+    public TrailerListCursorAdapter(Activity activity) {
         this.activity = activity;
     }
 
@@ -37,7 +36,7 @@ public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Trailer trailer = trailerList.get(position);
+        final Trailer trailer = getItem(position);
         holder.mTrailerImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
@@ -57,14 +56,22 @@ public class TrailerListAdapter extends RecyclerView.Adapter<TrailerListAdapter.
 
     @Override
     public int getItemCount() {
-        if(trailerList!=null){
-            return trailerList.size();
+        if(mCursor!=null){
+            return mCursor.getCount();
         }
         return 0;
     }
 
-    public void setTrailerList(TrailerList trailerList){
-        this.trailerList=trailerList.results;
+    private Trailer getItem(int position){
+        mCursor.moveToPosition(position);
+        Trailer trailer = new Trailer();
+        trailer.id = mCursor.getString(DetailFragment.COL_TRAILER_ID);
+        trailer.key = mCursor.getString(DetailFragment.COL_TRAILER_KEY);
+        return trailer;
+    }
+
+    public void setMovieCursor(Cursor cursor){
+        this.mCursor=cursor;
         notifyDataSetChanged();
     }
 
