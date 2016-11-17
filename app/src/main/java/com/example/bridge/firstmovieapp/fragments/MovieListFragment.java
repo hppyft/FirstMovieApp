@@ -31,7 +31,7 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
     private final String LOG_TAG = MovieListFragment.class.getSimpleName();
 
     private static final int MOVIE_LIST_LOADER = 0;
-    private static final String[] MOVIE_LIST_COLUMNS = {
+    public static final String[] MOVIE_LIST_COLUMNS = {
             MoviesEntry.TABLE_NAME + "." + MoviesEntry.COLUMN_MOVIE_ID,
             MoviesEntry.COLUMN_TITLE,
             MoviesEntry.COLUMN_POSTER_PATH,

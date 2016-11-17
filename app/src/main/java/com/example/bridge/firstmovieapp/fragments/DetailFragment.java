@@ -3,9 +3,11 @@ package com.example.bridge.firstmovieapp.fragments;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,6 +37,8 @@ import com.squareup.picasso.Picasso;
  */
 
 public class DetailFragment extends Fragment implements MovieDetailView, OnTrailerListChanged, OnReviewListChanged {
+
+    private final String LOG_TAG = DetailFragment.class.getSimpleName();
 
     public TrailerListChangedBroadcasReceiver mTrailerListChangedBroadcasReceiver;
     public static final String TRAILER_CHANGED = "trailer_changed";
@@ -118,8 +122,20 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
             }
         });
 
-        if (getActivity().getIntent()!=null) {
+        if (getActivity().getIntent().hasExtra(MovieDetailView.ARG_MOVIE)) {
             mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
+        }
+        if (getActivity().getIntent().getData()!=null){
+            Uri uri = getActivity().getIntent().getData();
+            String uriString = uri.toString();
+            Log.d(LOG_TAG, "THE URI IS HERE "+uriString);
+            String[] parts = uriString.split("[/]");
+            String idAndTitle = parts[parts.length-1];
+            String[] partsOfIdAndTitle = idAndTitle.split("[-]");
+            String id = partsOfIdAndTitle[0];
+            Utility ut = new Utility(getContext());
+            Log.d(LOG_TAG, "THE ID IS HERE "+id);
+            mMovie = ut.getMovieById(id);
         }
         Bundle args = getArguments();
         if (args != null){
