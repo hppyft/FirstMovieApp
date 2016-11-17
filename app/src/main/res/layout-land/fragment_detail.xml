@@ -1,199 +1,195 @@
-<FrameLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools=" http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:ignore="MissingPrefix">
+    android:background="@color/carbonGrey">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/cool_background_phone_size"/>
-
-    <android.support.v4.widget.NestedScrollView
-
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1">
 
-                <RelativeLayout
+                <CheckBox
+                    android:id="@+id/favorite_check_box"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1">
 
-                    <CheckBox
-                        android:id="@+id/favorite_check_box"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center_vertical"
 
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentLeft="true"
-                        android:gravity="center_vertical"
+                    style="?android:attr/starStyle"
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/darkYellow"/>
 
-                        style="?android:attr/starStyle"
-                        fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearanceLarge"
-                        android:textColor="@color/darkYellow"/>
+                <TextView
+                    android:id="@+id/detail_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_title"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    android:layout_below="@id/favorite_check_box"
+                    android:gravity="center_horizontal"
+                    android:paddingTop="@dimen/little_space_between_texts"
 
-                        android:layout_below="@id/favorite_check_box"
-                        android:gravity="center_horizontal"
-                        android:paddingTop="@dimen/little_space_between_texts"
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/medium_letter"
+                    android:textColor="@color/yellow"
+                    android:shadowColor="@color/black"
+                    android:shadowDx="0.0"
+                    android:shadowDy="0.0"
+                    android:shadowRadius="3.0" />
 
-                        fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAllCaps="true"
-                        android:textSize="@dimen/medium_letter"
-                        android:textColor="@color/blue"
-                        android:shadowColor="@color/black"
-                        android:shadowDx="0.0"
-                        android:shadowDy="0.0"
-                        android:shadowRadius="3.0" />
+                <!--/Wanted to use a custom font, didn't work,
+                    later on I will try to configure it better
+                    fontPath= "fonts/primeRegular.otf"-->
 
-                    <!--/Wanted to use a custom font, didn't work,
-                        later on I will try to configure it better
-                        fontPath= "fonts/primeRegular.otf"-->
+                <TextView
+                    android:id="@+id/detail_rate_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_rate_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_title"
+                    android:layout_alignLeft="@id/favorite_check_box"
+                    android:paddingTop="@dimen/little_space_between_texts"
+                    android:paddingLeft="@dimen/little_space_between_texts"
 
-                        android:layout_below="@id/detail_title"
-                        android:layout_alignLeft="@id/favorite_check_box"
-                        android:paddingTop="@dimen/little_space_between_texts"
-                        android:paddingLeft="@dimen/little_space_between_texts"
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAppearance="?android:textAppearance"
+                    android:textSize="@dimen/smallest_readable_letter"
+                    android:textColor="@color/white"/>
 
-                        fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearance"
-                        android:textSize="@dimen/smallest_readable_letter"/>
+                <TextView
+                    android:id="@+id/detail_rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_rate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/little_space_between_texts"
+                    android:layout_toRightOf="@id/detail_rate_label"
+                    android:layout_alignBaseline="@id/detail_rate_label"
 
-                        android:paddingLeft="@dimen/little_space_between_texts"
-                        android:layout_toRightOf="@id/detail_rate_label"
-                        android:layout_alignBaseline="@id/detail_rate_label"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/smallest_readable_letter"/>
 
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/smallest_readable_letter"/>
+                <TextView
+                    android:id="@+id/detail_release_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_release_label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/big_space_between_texts"
+                    android:layout_toRightOf="@id/detail_rate"
+                    android:layout_alignBaseline="@id/detail_rate_label"
 
-                        android:paddingLeft="@dimen/big_space_between_texts"
-                        android:layout_toRightOf="@id/detail_rate"
-                        android:layout_alignBaseline="@id/detail_rate_label"
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAppearance="?android:textAppearance"
+                    android:textSize="@dimen/smallest_readable_letter"
+                    android:textColor="@color/white"/>
 
-                        fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearance"
-                        android:textSize="@dimen/smallest_readable_letter"/>
+                <TextView
+                    android:id="@+id/detail_release"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_release"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/little_space_between_texts"
+                    android:layout_toRightOf="@id/detail_release_label"
+                    android:layout_alignBaseline="@id/detail_rate_label"
 
-                        android:paddingLeft="@dimen/little_space_between_texts"
-                        android:layout_toRightOf="@id/detail_release_label"
-                        android:layout_alignBaseline="@id/detail_rate_label"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/smallest_readable_letter"/>
 
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/smallest_readable_letter"/>
+                <TextView
+                    android:id="@+id/detail_overview_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_overview_label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_rate_label"
+                    android:layout_alignLeft="@id/detail_rate_label"
+                    android:paddingTop="@dimen/little_space_between_texts"
+                    android:gravity="center_horizontal"
 
-                        android:layout_below="@id/detail_rate_label"
-                        android:layout_alignLeft="@id/detail_rate_label"
-                        android:paddingTop="@dimen/little_space_between_texts"
-                        android:gravity="center_horizontal"
+                    fontPath= "fonts/chunkfive_print.ttf"
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:textColor="@color/white"/>
 
-                        fontPath= "fonts/chunkfive_print.ttf"
-                        android:textAppearance="?android:textAppearanceLarge"/>
+                <TextView
+                    android:id="@+id/detail_overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
 
-                    <TextView
-                        android:id="@+id/detail_overview"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                    android:layout_below="@id/detail_overview_label"
+                    android:layout_alignLeft="@id/detail_overview"
+                    android:paddingLeft="@dimen/little_space_between_texts"
 
-                        android:layout_below="@id/detail_overview_label"
-                        android:layout_alignLeft="@id/detail_overview"
-                        android:paddingLeft="@dimen/little_space_between_texts"
-
-                        android:textAppearance="?android:textAppearance"
-                        android:textSize="@dimen/smallest_readable_letter"/>
-                </RelativeLayout>
+                    android:textAppearance="?android:textAppearance"
+                    android:textSize="@dimen/smallest_readable_letter"
+                    android:textColor="@color/white"/>
+            </RelativeLayout>
 
 
-                <ImageView
-                    android:id="@+id/detail_poster"
-                    android:layout_width="@dimen/detail_poster_item_width"
-                    android:layout_height="@dimen/detail_poster_item_height"
+            <ImageView
+                android:id="@+id/detail_poster"
+                android:layout_width="@dimen/detail_poster_item_width"
+                android:layout_height="@dimen/detail_poster_item_height"
 
-                    android:scaleType="fitXY"
-                    android:cropToPadding="true"
-                    android:paddingBottom="@dimen/no_space"/>
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/detail_trailer_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:paddingTop="@dimen/medium_space_between_texts"
-                android:layout_gravity="center_horizontal"
-
-                fontPath= "fonts/chunkfive_print.ttf"
-                android:textAppearance="?android:textAppearanceLarge"/>
-
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_trailer_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
-
-            <TextView
-                android:id="@+id/detail_review_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-
-                android:layout_gravity="center_horizontal"
-
-                fontPath= "fonts/chunkfive_print.ttf"
-                android:textAppearance="?android:textAppearanceLarge"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_review_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+                android:scaleType="fitXY"
+                android:cropToPadding="true"
+                android:paddingBottom="@dimen/no_space"/>
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
-</FrameLayout>
+        <TextView
+            android:id="@+id/detail_trailer_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:paddingTop="@dimen/medium_space_between_texts"
+            android:layout_gravity="center_horizontal"
+
+            fontPath= "fonts/chunkfive_print.ttf"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"/>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_trailer_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+        <TextView
+            android:id="@+id/detail_review_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="@dimen/medium_space_between_texts"
+
+            fontPath= "fonts/chunkfive_print.ttf"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:textColor="@color/white"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view_review_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

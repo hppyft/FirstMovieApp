@@ -23,6 +23,7 @@ import com.example.bridge.firstmovieapp.broadcastreceivers.ReviewListChangedBroa
 import com.example.bridge.firstmovieapp.broadcastreceivers.TrailerListChangedBroadcasReceiver;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
+import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
 import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
@@ -130,6 +131,9 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
             updateTrailerList();
             updateReviewList();
         }
+        else{
+            this.favoriteCheckBox.setVisibility(View.INVISIBLE);
+        }
 //        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
 //        rootView.setBackground(drawable);
 
@@ -153,9 +157,16 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
 
     @Override
     public void showMovie(Movie movie) {
+        this.favoriteCheckBox.setVisibility(View.VISIBLE);
         this.favoriteCheckBox.setText(R.string.favorite_label);
         this.title.setText(movie.original_title);
-        Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185"+movie.poster_path).into(this.poster);
+        Utility ut = new Utility(getActivity());
+        if(ut.isConnectionAvailable()) {
+            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" + movie.poster_path).into(this.poster);
+        }
+        else{
+            this.poster.setImageResource(R.drawable.blank_poster);
+        }
         this.overviewLabel.setText(R.string.overview_label);
         this.overview.setText(movie.overview);
         this.rateLabel.setText(R.string.rate_label);

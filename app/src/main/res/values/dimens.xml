@@ -10,8 +10,8 @@
     <dimen name="little_space_between_texts">5dp</dimen>
     <dimen name="medium_space_between_texts">10dp</dimen>
     <dimen name="big_space_between_texts">20dp</dimen>
-    <dimen name="card_corner_radius">3dp</dimen>
-    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_corner_radius">5dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
     <dimen name="small_letter">10dp</dimen>
     <dimen name="small_to_medium_letter">15dp</dimen>
     <dimen name="medium_letter">20dp</dimen>

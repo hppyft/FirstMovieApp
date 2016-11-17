@@ -11,5 +11,8 @@
     <color name="darkYellow">#ffd700</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="carbonGrey">#404040</color>
+    <color name="grey">#666666</color>
+    <color name="lightGrey">#cccccc</color>
 
 </resources>

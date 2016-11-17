@@ -12,22 +12,12 @@
     android:layout_marginTop="@dimen/medium_space_between_texts"
 
     card_view:cardCornerRadius="@dimen/card_corner_radius"
-    card_view:cardElevation="@dimen/card_elevation" >
+    card_view:cardElevation="@dimen/card_elevation">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignBottom="@+id/review_content"
-            android:src="@drawable/card_background"/>
-
+        android:layout_height="wrap_content"
+        android:background="@color/grey">
 
         <TextView
             tools:text="Titulo"
