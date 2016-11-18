@@ -82,6 +82,10 @@
             android:name=".syncservice.ReviewAndTrailerService"
             android:enabled="true"
             />
+        <service
+            android:name=".syncservice.LooseMovieService"
+            android:enabled="true"
+            />
     </application>
 
 </manifest>

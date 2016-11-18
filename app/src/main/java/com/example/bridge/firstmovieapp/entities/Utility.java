@@ -1,13 +1,17 @@
 package com.example.bridge.firstmovieapp.entities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
+import com.example.bridge.firstmovieapp.syncservice.LooseMovieService;
 
 import java.net.InetAddress;
+
+import static com.example.bridge.firstmovieapp.interfaces.MovieDetailView.ARG_MOVIE_ID;
 
 public class Utility {
     public Context context;
@@ -33,6 +37,7 @@ public class Utility {
     }
 
     public Movie getMovieById(String id) {
+
         Cursor cursor = context.getContentResolver().query(MovieContract.MoviesEntry.CONTENT_URI,
                 MovieListFragment.MOVIE_LIST_COLUMNS,
                 MovieContract.MoviesEntry.COLUMN_MOVIE_ID + "=?",
@@ -53,7 +58,10 @@ public class Utility {
             return movie;
         }
         else{
-            return movie;
+            Intent intent = new Intent(context, LooseMovieService.class);
+            intent.putExtra(ARG_MOVIE_ID, id);
+            context.startService(intent);
+            return null;
         }
     }
 }

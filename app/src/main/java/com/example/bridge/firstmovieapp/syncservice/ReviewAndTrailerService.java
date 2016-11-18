@@ -57,13 +57,13 @@ public class ReviewAndTrailerService extends IntentService {
                 e.printStackTrace();
             }
 
-            if (null != mReviewList) {
+            if (null != mReviewList && !mReviewList.results.isEmpty()) {
                 updateReviewsDB(mReviewList);
                 Intent ReviewBroadcastIntent = new Intent();
                 ReviewBroadcastIntent.setAction(REVIEW_CHANGED);
                 getBaseContext().sendBroadcast(ReviewBroadcastIntent);
             }
-            if (null != mTrailerList) {
+            if (null != mTrailerList && !mTrailerList.results.isEmpty()) {
                 updateTrailersDB(mTrailerList);
                 Intent TrailerBroadcastIntent = new Intent();
                 TrailerBroadcastIntent.setAction(TRAILER_CHANGED);

@@ -9,6 +9,7 @@ import com.example.bridge.firstmovieapp.entities.Movie;
 public interface MovieDetailView{
 
     String ARG_MOVIE = "movie";
+    String ARG_MOVIE_ID = "movie_id";
 
     void showMovie (Movie movie);
 }

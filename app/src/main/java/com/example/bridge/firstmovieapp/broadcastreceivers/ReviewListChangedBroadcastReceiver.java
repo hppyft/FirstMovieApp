@@ -12,7 +12,7 @@ import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
  * Created by bridge on 16/11/2016.
  */
 
-public class ReviewListChangedBroadcasReceiver extends BroadcastReceiver {
+public class ReviewListChangedBroadcastReceiver extends BroadcastReceiver {
     private OnReviewListChanged mOnReviewListChanged;
     public boolean registered;
 
@@ -36,7 +36,7 @@ public class ReviewListChangedBroadcasReceiver extends BroadcastReceiver {
         }
     }
 
-    public ReviewListChangedBroadcasReceiver(OnReviewListChanged onReviewListChanged) {
+    public ReviewListChangedBroadcastReceiver(OnReviewListChanged onReviewListChanged) {
         mOnReviewListChanged = onReviewListChanged;
     }
 

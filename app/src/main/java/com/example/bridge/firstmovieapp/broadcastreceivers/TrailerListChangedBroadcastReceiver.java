@@ -8,7 +8,7 @@ import android.content.IntentFilter;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
 
-public class TrailerListChangedBroadcasReceiver extends BroadcastReceiver {
+public class TrailerListChangedBroadcastReceiver extends BroadcastReceiver {
     private OnTrailerListChanged mOnTrailerListChanged;
     public boolean registered;
 
@@ -32,7 +32,7 @@ public class TrailerListChangedBroadcasReceiver extends BroadcastReceiver {
         }
     }
 
-    public TrailerListChangedBroadcasReceiver(OnTrailerListChanged onTrailerListChanged) {
+    public TrailerListChangedBroadcastReceiver(OnTrailerListChanged onTrailerListChanged) {
         mOnTrailerListChanged = onTrailerListChanged;
     }
 

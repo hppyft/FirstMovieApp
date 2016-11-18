@@ -21,8 +21,8 @@ import android.widget.TextView;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.ReviewListCursorAdapter;
 import com.example.bridge.firstmovieapp.adapters.TrailerListCursorAdapter;
-import com.example.bridge.firstmovieapp.broadcastreceivers.ReviewListChangedBroadcasReceiver;
-import com.example.bridge.firstmovieapp.broadcastreceivers.TrailerListChangedBroadcasReceiver;
+import com.example.bridge.firstmovieapp.broadcastreceivers.ReviewListChangedBroadcastReceiver;
+import com.example.bridge.firstmovieapp.broadcastreceivers.TrailerListChangedBroadcastReceiver;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.Utility;
@@ -40,7 +40,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
 
     private final String LOG_TAG = DetailFragment.class.getSimpleName();
 
-    public TrailerListChangedBroadcasReceiver mTrailerListChangedBroadcasReceiver;
+    public TrailerListChangedBroadcastReceiver mTrailerListChangedBroadcastReceiver;
     public static final String TRAILER_CHANGED = "trailer_changed";
     public static final int COL_TRAILER_ID = 0;
     public static final int COL_TRAILER_KEY = 1;
@@ -49,7 +49,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
                     MovieContract.TrailersEntry.COLUMN_TRAILER_ID,
             MovieContract.TrailersEntry.COLUMN_TRAILER_PATH};
 
-    public ReviewListChangedBroadcasReceiver mReviewListChangedBroadcasReceiver;
+    public ReviewListChangedBroadcastReceiver mReviewListChangedBroadcastReceiver;
     public static final String REVIEW_CHANGED = "review_changed";
     public static final int COL_REVIEW_ID = 0;
     public static final int COL_REVIEW_AUTHOR = 1;
@@ -81,8 +81,8 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
 
     public DetailFragment() {
         setHasOptionsMenu(true);
-        mTrailerListChangedBroadcasReceiver = new TrailerListChangedBroadcasReceiver(this);
-        mReviewListChangedBroadcasReceiver = new ReviewListChangedBroadcasReceiver(this);
+        mTrailerListChangedBroadcastReceiver = new TrailerListChangedBroadcastReceiver(this);
+        mReviewListChangedBroadcastReceiver = new ReviewListChangedBroadcastReceiver(this);
     }
 
     @Override
@@ -127,12 +127,9 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         }
         if (getActivity().getIntent().getData()!=null){
             Uri uri = getActivity().getIntent().getData();
-            String uriString = uri.toString();
-            Log.d(LOG_TAG, "THE URI IS HERE "+uriString);
-            String[] parts = uriString.split("[/]");
-            String idAndTitle = parts[parts.length-1];
-            String[] partsOfIdAndTitle = idAndTitle.split("[-]");
-            String id = partsOfIdAndTitle[0];
+            String[] parts = uri.getPath().split("[/]");
+            String[] idAndTitle = parts[parts.length-1].split("[-]");
+            String id = idAndTitle[0];
             Utility ut = new Utility(getContext());
             Log.d(LOG_TAG, "THE ID IS HERE "+id);
             mMovie = ut.getMovieById(id);
@@ -243,14 +240,14 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mTrailerListChangedBroadcasReceiver.register(getContext());
-        mReviewListChangedBroadcasReceiver.register(getContext());
+        mTrailerListChangedBroadcastReceiver.register(getContext());
+        mReviewListChangedBroadcastReceiver.register(getContext());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTrailerListChangedBroadcasReceiver.unregister(getContext());
-        mReviewListChangedBroadcasReceiver.unregister(getContext());
+        mTrailerListChangedBroadcastReceiver.unregister(getContext());
+        mReviewListChangedBroadcastReceiver.unregister(getContext());
     }
 }

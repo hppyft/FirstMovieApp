@@ -18,6 +18,7 @@ import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.MovieList;
+import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
 
 import java.io.IOException;
@@ -38,37 +39,43 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        Log.d(LOG_TAG, "Starting sync");
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        IFetchDataFromMovieDB fetchDataFromMovieDB = retrofit.create(IFetchDataFromMovieDB.class);
-        //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        //        String sort = prefs.getString(mContext.getString(R.string.pref_sort_key),
-        //                mContext.getString(R.string.pref_sort_popular));
-        String sortPopular = getContext().getString(R.string.pref_sort_popular);
-        Call<MovieList> movieListCallPopular = fetchDataFromMovieDB.getMovieList(sortPopular);
-        MovieList listPopular = null;
-        try {
-            listPopular = movieListCallPopular.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        if(Utility.isInternetAvailable()) {
+            Log.d(LOG_TAG, "Starting sync");
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("http://api.themoviedb.org/3/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            IFetchDataFromMovieDB fetchDataFromMovieDB = retrofit.create(IFetchDataFromMovieDB.class);
+            //        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+            //        String sort = prefs.getString(mContext.getString(R.string.pref_sort_key),
+            //                mContext.getString(R.string.pref_sort_popular));
+            String sortPopular = getContext().getString(R.string.pref_sort_popular);
+            Call<MovieList> movieListCallPopular = fetchDataFromMovieDB.getMovieList(sortPopular);
+            MovieList listPopular = null;
+            try {
+                listPopular = movieListCallPopular.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        String sortTopRated = getContext().getString(R.string.pref_sort_top_rated);
-        Call<MovieList> movieListCallTopRated = fetchDataFromMovieDB.getMovieList(sortTopRated);
-        MovieList listTopRated = null;
-        try {
-            listTopRated = movieListCallTopRated.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            String sortTopRated = getContext().getString(R.string.pref_sort_top_rated);
+            Call<MovieList> movieListCallTopRated = fetchDataFromMovieDB.getMovieList(sortTopRated);
+            MovieList listTopRated = null;
+            try {
+                listTopRated = movieListCallTopRated.execute().body();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        MovieList movieList = new MovieList();
-        movieList.results = new ArrayList<>();
-        movieList.results.addAll(listPopular.results);
-        movieList.results.addAll(listTopRated.results);
+            MovieList movieList = new MovieList();
+            movieList.results = new ArrayList<>();
+            movieList.results.addAll(listPopular.results);
+            movieList.results.addAll(listTopRated.results);
+            addMoviesToDB(getContext(), movieList);
+        }
+    }
+
+    public static void addMoviesToDB(Context context, MovieList movieList){
         for (Movie iterator : movieList.results) {
             ContentValues movieValues = new ContentValues();
             movieValues.put(MovieContract.MoviesEntry.COLUMN_MOVIE_ID, iterator.id);
@@ -78,19 +85,19 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
             movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, iterator.release_date);
             movieValues.put(MovieContract.MoviesEntry.COLUMN_VOTE_AVERAGE, iterator.vote_average);
             movieValues.put(MovieContract.MoviesEntry.COLUMN_POPULARITY, iterator.popularity);
-            //            movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE, iterator.favorite);
-            Cursor cursor = getContext().getContentResolver().query(MovieContract.MoviesEntry.CONTENT_URI,
+//          movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE, iterator.favorite);
+            Cursor cursor = context.getContentResolver().query(MovieContract.MoviesEntry.CONTENT_URI,
                     null,
                     MovieContract.MoviesEntry.COLUMN_MOVIE_ID + " = ?",
                     new String[]{iterator.id},
                     null);
             if (cursor.getCount() != 0) {
-                getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
+                context.getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
                         movieValues,
                         MovieContract.MoviesEntry.COLUMN_MOVIE_ID + " = ?",
                         new String[]{iterator.id});
             } else {
-                getContext().getContentResolver().insert(MovieContract.MoviesEntry.CONTENT_URI, movieValues);
+                context.getContentResolver().insert(MovieContract.MoviesEntry.CONTENT_URI, movieValues);
             }
             cursor.close();
         }

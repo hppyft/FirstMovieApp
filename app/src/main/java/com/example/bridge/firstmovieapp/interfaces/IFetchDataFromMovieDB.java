@@ -1,6 +1,7 @@
 package com.example.bridge.firstmovieapp.interfaces;
 
 import com.example.bridge.firstmovieapp.BuildConfig;
+import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.entities.ReviewList;
 import com.example.bridge.firstmovieapp.entities.TrailerList;
@@ -24,4 +25,7 @@ public interface IFetchDataFromMovieDB {
 
     @GET ("movie/{movie_id}/reviews"+"?api_key="+ BuildConfig.THE_MOVIE_DATABASE_API_KEY)
     Call<ReviewList> getReviews(@Path ("movie_id") String id);
+
+    @GET ("movie/{movie_id}"+"?api_key="+ BuildConfig.THE_MOVIE_DATABASE_API_KEY)
+    Call<Movie> getLooseMovie(@Path("movie_id") String id);
 }
