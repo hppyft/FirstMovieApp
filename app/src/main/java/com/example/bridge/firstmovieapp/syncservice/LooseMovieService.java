@@ -10,7 +10,6 @@ import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
-import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +19,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.example.bridge.firstmovieapp.interfaces.MovieDetailView.ARG_MOVIE_ID;
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
 
 public class LooseMovieService extends IntentService {
 
@@ -50,7 +50,7 @@ public class LooseMovieService extends IntentService {
                 movieList.results.add(movie);
                 SyncAdapter.addMoviesToDB(getBaseContext(), movieList);
                 Intent LooseMovieAddedIntent = new Intent(getBaseContext(), DetailActivity.class);
-                LooseMovieAddedIntent.putExtra(MovieDetailView.ARG_MOVIE, movie);
+                LooseMovieAddedIntent.putExtra(ARG_MOVIE, movie);
                 LooseMovieAddedIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                 startActivity(LooseMovieAddedIntent);
             }

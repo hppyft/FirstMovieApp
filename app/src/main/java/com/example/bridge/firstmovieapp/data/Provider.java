@@ -20,6 +20,8 @@ public class Provider extends ContentProvider{
     static final int MOVIE = 100;
     static final int TRAILER = 200;
     static final int REVIEW = 300;
+    public static String ARG_MOVIE = "movie";
+    public static String ARG_MOVIE_ID = "movie_id";
 
 //    private static final SQLiteQueryBuilder SQ_LITE_QUERY_BUILDER;
 //    static {

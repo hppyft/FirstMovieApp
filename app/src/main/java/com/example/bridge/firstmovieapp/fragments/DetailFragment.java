@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,17 +28,18 @@ import com.example.bridge.firstmovieapp.broadcastreceivers.TrailerListChangedBro
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.Utility;
-import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
 import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
 import com.example.bridge.firstmovieapp.syncservice.ReviewAndTrailerService;
 import com.squareup.picasso.Picasso;
 
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
+
 /**
  * Created by bridge on 18/10/2016.
  */
 
-public class DetailFragment extends Fragment implements MovieDetailView, OnTrailerListChanged, OnReviewListChanged {
+public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnTrailerListChanged, OnReviewListChanged {
 
     private final String LOG_TAG = DetailFragment.class.getSimpleName();
 
@@ -60,6 +63,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
             MovieContract.ReviewsEntry.COLUMN_AUTHOR,
             MovieContract.ReviewsEntry.COLUMN_CONTENT};
 
+    public Cursor mCursor;
     public Movie mMovie;
     public RecyclerView mTrailerRecyclerView;
     public TrailerListCursorAdapter mTrailerRecyclerAdapter;
@@ -80,7 +84,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
 
 
     public DetailFragment() {
-        setHasOptionsMenu(true);
         mTrailerListChangedBroadcastReceiver = new TrailerListChangedBroadcastReceiver(this);
         mReviewListChangedBroadcastReceiver = new ReviewListChangedBroadcastReceiver(this);
     }
@@ -122,8 +125,8 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
             }
         });
 
-        if (getActivity().getIntent().hasExtra(MovieDetailView.ARG_MOVIE)) {
-            mMovie = getActivity().getIntent().getParcelableExtra(MovieDetailView.ARG_MOVIE);
+        if (getActivity().getIntent().hasExtra(ARG_MOVIE)) {
+            mMovie = getActivity().getIntent().getParcelableExtra(ARG_MOVIE);
         }
         if (getActivity().getIntent().getData()!=null){
             Uri uri = getActivity().getIntent().getData();
@@ -136,7 +139,7 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         }
         Bundle args = getArguments();
         if (args != null){
-            mMovie = args.getParcelable(MovieDetailView.ARG_MOVIE);
+            mMovie = args.getParcelable(ARG_MOVIE);
         }
         if(null!=mMovie) {
             showMovie(mMovie);
@@ -147,8 +150,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         else{
             this.favoriteCheckBox.setVisibility(View.INVISIBLE);
         }
-//        Drawable drawable = getResources().getDrawable(R.drawable.cool_background_phone_size);
-//        rootView.setBackground(drawable);
 
         return rootView;
     }
@@ -168,7 +169,6 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         inflater.inflate(R.menu.menu_detail_fragment, menu);
     }
 
-    @Override
     public void showMovie(Movie movie) {
         this.favoriteCheckBox.setVisibility(View.VISIBLE);
         this.favoriteCheckBox.setText(R.string.favorite_label);
@@ -249,5 +249,20 @@ public class DetailFragment extends Fragment implements MovieDetailView, OnTrail
         super.onDestroy();
         mTrailerListChangedBroadcastReceiver.unregister(getContext());
         mReviewListChangedBroadcastReceiver.unregister(getContext());
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mCursor = data;
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mCursor = null;
     }
 }

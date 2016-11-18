@@ -11,7 +11,8 @@ import com.example.bridge.firstmovieapp.syncservice.LooseMovieService;
 
 import java.net.InetAddress;
 
-import static com.example.bridge.firstmovieapp.interfaces.MovieDetailView.ARG_MOVIE_ID;
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
+
 
 public class Utility {
     public Context context;

@@ -20,9 +20,9 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
 import static com.example.bridge.firstmovieapp.fragments.DetailFragment.REVIEW_CHANGED;
 import static com.example.bridge.firstmovieapp.fragments.DetailFragment.TRAILER_CHANGED;
-import static com.example.bridge.firstmovieapp.interfaces.MovieDetailView.ARG_MOVIE;
 
 public class ReviewAndTrailerService extends IntentService {
 

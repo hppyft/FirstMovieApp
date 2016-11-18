@@ -12,10 +12,11 @@ import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
-import com.example.bridge.firstmovieapp.interfaces.MovieDetailView;
 import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
 
 public class MainActivity extends AppCompatActivity implements CallbackMovieClicked {
 
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     public void onItemSelected(Movie movie){
         if (mTwoPane){
             Bundle args = new Bundle();
-            args.putParcelable(MovieDetailView.ARG_MOVIE, movie);
+            args.putParcelable(ARG_MOVIE, movie);
 
             DetailFragment detailFragment = new DetailFragment();
             detailFragment.setArguments(args);
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
         }
         else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(MovieDetailView.ARG_MOVIE, movie);
+            intent.putExtra(ARG_MOVIE, movie);
             this.startActivity(intent);
         }
     }
