@@ -1,9 +1,9 @@
 package com.example.bridge.firstmovieapp.interfaces;
 
-import com.example.bridge.firstmovieapp.entities.Movie;
+import android.net.Uri;
 
 public interface CallbackMovieClicked {
 
-    void onItemSelected(Movie movie);
+    void onItemSelected(Uri movieUri);
 
 }

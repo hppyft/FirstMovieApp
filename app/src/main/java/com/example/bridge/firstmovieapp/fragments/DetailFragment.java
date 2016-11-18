@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,18 +31,17 @@ import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
 import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
+import com.example.bridge.firstmovieapp.syncservice.LooseMovieService;
 import com.example.bridge.firstmovieapp.syncservice.ReviewAndTrailerService;
 import com.squareup.picasso.Picasso;
 
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
-
-/**
- * Created by bridge on 18/10/2016.
- */
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
 
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnTrailerListChanged, OnReviewListChanged {
 
     private final String LOG_TAG = DetailFragment.class.getSimpleName();
+    private static final int DETAIL_FRAGMENT_LOADER = 0;
 
     public TrailerListChangedBroadcastReceiver mTrailerListChangedBroadcastReceiver;
     public static final String TRAILER_CHANGED = "trailer_changed";
@@ -64,6 +64,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             MovieContract.ReviewsEntry.COLUMN_CONTENT};
 
     public Cursor mCursor;
+    public Uri mUri;
     public Movie mMovie;
     public RecyclerView mTrailerRecyclerView;
     public TrailerListCursorAdapter mTrailerRecyclerAdapter;
@@ -125,29 +126,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             }
         });
 
-        if (getActivity().getIntent().hasExtra(ARG_MOVIE)) {
-            mMovie = getActivity().getIntent().getParcelableExtra(ARG_MOVIE);
-        }
-        if (getActivity().getIntent().getData()!=null){
-            Uri uri = getActivity().getIntent().getData();
-            String[] parts = uri.getPath().split("[/]");
-            String[] idAndTitle = parts[parts.length-1].split("[-]");
-            String id = idAndTitle[0];
-            Utility ut = new Utility(getContext());
-            Log.d(LOG_TAG, "THE ID IS HERE "+id);
-            mMovie = ut.getMovieById(id);
-        }
-        Bundle args = getArguments();
-        if (args != null){
-            mMovie = args.getParcelable(ARG_MOVIE);
-        }
-        if(null!=mMovie) {
-            showMovie(mMovie);
-            startUpdaters();
-            updateTrailerList();
-            updateReviewList();
-        }
-        else{
+        if(null==mMovie) {
             this.favoriteCheckBox.setVisibility(View.INVISIBLE);
         }
 
@@ -242,6 +221,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         setHasOptionsMenu(true);
         mTrailerListChangedBroadcastReceiver.register(getContext());
         mReviewListChangedBroadcastReceiver.register(getContext());
+        getLoaderManager().initLoader(DETAIL_FRAGMENT_LOADER, null, this);
     }
 
     @Override
@@ -253,12 +233,49 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
+        if (getArguments() != null){
+            mUri = getArguments().getParcelable(ARG_MOVIE);
+            return new CursorLoader(getActivity(),
+                    mUri,
+                    null,
+                    null,
+                    null,
+                    null);
+        }
+
+        Log.d(LOG_TAG, "onCreateLoader is going to return null");
         return null;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         mCursor = data;
+       if(mCursor.moveToFirst()) {
+           Movie movie = new Movie();
+           movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
+           movie.original_title = mCursor.getString(MovieListFragment.COL_TITLE);
+           movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
+           movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
+           movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
+           movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE);
+           movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
+           movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
+           showMovie(movie);
+           startUpdaters();
+           updateTrailerList();
+           updateReviewList();
+       }
+       else{
+           String[] parts = mUri.getPath().split("[/]");
+           String[] idAndTitle = parts[parts.length-1].split("[-]");
+           String idFromUri = idAndTitle[0];
+           Log.d(LOG_TAG, "THE ID IS HERE "+idFromUri);
+
+           Intent intent = new Intent(getContext(), LooseMovieService.class);
+           intent.putExtra(ARG_MOVIE_ID, idFromUri);
+           getActivity().startService(intent);
+       }
     }
 
     @Override

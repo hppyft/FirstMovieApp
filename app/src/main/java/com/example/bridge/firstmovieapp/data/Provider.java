@@ -18,10 +18,18 @@ public class Provider extends ContentProvider{
     private MovieDbHelper mOpenHelper;
 
     static final int MOVIE = 100;
+    static final int MOVIE_WITH_ID = 101;
     static final int TRAILER = 200;
     static final int REVIEW = 300;
     public static String ARG_MOVIE = "movie";
+    public static String ARG_MOVIE_URI = "movie_uri";
     public static String ARG_MOVIE_ID = "movie_id";
+
+    public static final String sMovieIdSelection =
+            MoviesEntry.TABLE_NAME +
+                    "." +
+                    MoviesEntry.COLUMN_MOVIE_ID +
+                    "=?";
 
 //    private static final SQLiteQueryBuilder SQ_LITE_QUERY_BUILDER;
 //    static {
@@ -56,10 +64,11 @@ public class Provider extends ContentProvider{
 //                sortOrder);
 //    }
 
-    static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = MovieContract.CONTENT_AUTHORITY;
 
+        matcher.addURI(authority, MovieContract.PATH_MOVIES + "/*", MOVIE_WITH_ID);
         matcher.addURI(authority, MovieContract.PATH_MOVIES, MOVIE);
         matcher.addURI(authority, MovieContract.PATH_TRAILERS, TRAILER);
         matcher.addURI(authority, MovieContract.PATH_REVIEWS, REVIEW);
@@ -78,6 +87,8 @@ public class Provider extends ContentProvider{
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
+            case MOVIE_WITH_ID:
+                return MoviesEntry.CONTENT_ITEM_TYPE;
             case MOVIE:
                 return MoviesEntry.CONTENT_TYPE;
             case TRAILER:
@@ -95,6 +106,17 @@ public class Provider extends ContentProvider{
         Cursor retCursor;
         final int match = sUriMatcher.match(uri);
         switch (match) {
+            case MOVIE_WITH_ID: {
+                retCursor = mOpenHelper.getReadableDatabase().query(
+                        MoviesEntry.TABLE_NAME,
+                        null,
+                        sMovieIdSelection,
+                        new String[] {uri.getLastPathSegment()},
+                        null,
+                        null,
+                        null);
+                break;
+            }
             case MOVIE: {
                 retCursor = mOpenHelper.getReadableDatabase().query(
                         MoviesEntry.TABLE_NAME,
@@ -142,6 +164,9 @@ public class Provider extends ContentProvider{
         Uri returnUri;
 
         switch (match){
+            case MOVIE_WITH_ID: {
+                throw new android.database.SQLException("Failed to insert row into " + uri);
+            }
             case MOVIE: {
                 long _id = db.insert(MoviesEntry.TABLE_NAME, null, values);
                 if ( _id > 0 ) {
@@ -191,7 +216,11 @@ public class Provider extends ContentProvider{
         }
 
         switch (match){
-            case MOVIE: {
+            case MOVIE_WITH_ID: {
+                rowsDeleted = db.delete(MoviesEntry.TABLE_NAME, sMovieIdSelection, new String[] {uri.getLastPathSegment()});
+                break;
+            }
+                case MOVIE: {
                 rowsDeleted = db.delete(MoviesEntry.TABLE_NAME, selection, selectionArgs);
                 break;
             }
@@ -221,6 +250,10 @@ public class Provider extends ContentProvider{
         int rowsUpdated;
 
         switch (match) {
+            case MOVIE_WITH_ID: {
+                rowsUpdated = db.update(MoviesEntry.TABLE_NAME, values, sMovieIdSelection, new String[] {uri.getLastPathSegment()});
+                break;
+            }
             case MOVIE: {
                 rowsUpdated = db.update(MoviesEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;

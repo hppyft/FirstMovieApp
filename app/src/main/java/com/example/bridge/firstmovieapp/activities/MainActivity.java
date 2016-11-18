@@ -2,13 +2,13 @@ package com.example.bridge.firstmovieapp.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
-import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
@@ -16,7 +16,7 @@ import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_URI;
 
 public class MainActivity extends AppCompatActivity implements CallbackMovieClicked {
 
@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     }
 
     @Override
-    public void onItemSelected(Movie movie){
+    public void onItemSelected(Uri uri){
         if (mTwoPane){
             Bundle args = new Bundle();
-            args.putParcelable(ARG_MOVIE, movie);
+            args.putParcelable(ARG_MOVIE_URI, uri);
 
             DetailFragment detailFragment = new DetailFragment();
             detailFragment.setArguments(args);
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
         }
         else {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra(ARG_MOVIE, movie);
+            intent.setData(uri);
             this.startActivity(intent);
         }
     }

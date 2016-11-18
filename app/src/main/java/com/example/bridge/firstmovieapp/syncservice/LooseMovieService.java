@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
-import com.example.bridge.firstmovieapp.activities.DetailActivity;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.entities.Utility;
@@ -18,8 +17,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
 
 public class LooseMovieService extends IntentService {
@@ -49,10 +46,10 @@ public class LooseMovieService extends IntentService {
                 movieList.results = new ArrayList<>();
                 movieList.results.add(movie);
                 SyncAdapter.addMoviesToDB(getBaseContext(), movieList);
-                Intent LooseMovieAddedIntent = new Intent(getBaseContext(), DetailActivity.class);
-                LooseMovieAddedIntent.putExtra(ARG_MOVIE, movie);
-                LooseMovieAddedIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-                startActivity(LooseMovieAddedIntent);
+//                Intent LooseMovieAddedIntent = new Intent(getBaseContext(), DetailActivity.class);
+//                LooseMovieAddedIntent.putExtra(ARG_MOVIE, movie);
+//                LooseMovieAddedIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(LooseMovieAddedIntent);
             }
             else {
                 // create a handler to post messages to the main thread

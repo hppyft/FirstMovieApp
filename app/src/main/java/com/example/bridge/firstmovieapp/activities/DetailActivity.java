@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.bridge.firstmovieapp.data.Provider;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.R;
 
@@ -26,8 +27,14 @@ public class DetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
+            DetailFragment detailFragment = new DetailFragment();
+            if (getIntent().getData()!=null) {
+                Bundle args = new Bundle();
+                args.putParcelable(Provider.ARG_MOVIE_URI, getIntent().getData());
+                detailFragment.setArguments(args);
+            }
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.detail_layout, new DetailFragment())
+                    .add(R.id.detail_layout, detailFragment)
                     .commit();
         }
     }

@@ -2,6 +2,7 @@ package com.example.bridge.firstmovieapp.adapters;
 
 import android.app.Activity;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bridge.firstmovieapp.R;
-import com.example.bridge.firstmovieapp.entities.Movie;
+import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
@@ -35,35 +36,36 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Movie movie = getItem(position);
+        final Uri uri = getItem(position);
         holder.mPosterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((CallbackMovieClicked) activity).onItemSelected(movie);
+                ((CallbackMovieClicked) activity).onItemSelected(uri);
             }
         });
         Utility ut = new Utility(activity);
         if(ut.isConnectionAvailable()) {
-            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + movie.poster_path).into(holder.mPosterView);
+            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mCursor.getString(MovieListFragment.COL_POSTER_PATH)).into(holder.mPosterView);
         }
         else{
             holder.mPosterView.setImageResource(R.drawable.blank_poster);
-            holder.mTitleView.setText(movie.original_title);
+            holder.mTitleView.setText(mCursor.getString(MovieListFragment.COL_TITLE));
         }
     }
 
-    private Movie getItem(int position) {
+    private Uri getItem(int position) {
         mCursor.moveToPosition(position);
-        Movie movie = new Movie();
-        movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
-        movie.original_title = mCursor.getString(MovieListFragment.COL_TITLE);
-        movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
-        movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
-        movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
-        movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE);
-        movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
-        movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
-        return movie;
+//        Movie movie = new Movie();
+//        movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
+//        movie.original_title = mCursor.getString(MovieListFragment.COL_TITLE);
+//        movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
+//        movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
+//        movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
+//        movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE);
+//        movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
+//        movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
+        long id = Long.parseLong(mCursor.getString(MovieListFragment.COL_MOVIE_ID));
+        return MovieContract.MoviesEntry.buildMovieUri(id);
     }
 
     @Override
