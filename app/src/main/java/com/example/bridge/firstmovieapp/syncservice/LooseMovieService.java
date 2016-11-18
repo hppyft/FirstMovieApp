@@ -2,6 +2,7 @@ package com.example.bridge.firstmovieapp.syncservice;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.example.bridge.firstmovieapp.activities.DetailActivity;
@@ -54,11 +55,25 @@ public class LooseMovieService extends IntentService {
                 startActivity(LooseMovieAddedIntent);
             }
             else {
-                Toast.makeText(getBaseContext(), "Sorry, but this ID doesn't seem to exist in TheMovieDB database", Toast.LENGTH_LONG).show();
+                // create a handler to post messages to the main thread
+                Handler mHandler = new Handler(getMainLooper());
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Sorry, but this ID doesn't seem to exist in TheMovieDB database", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         }
         else{
-            Toast.makeText(getBaseContext(), "No internet connection! Please, try again later", Toast.LENGTH_LONG).show();
+            // create a handler to post messages to the main thread
+            Handler mHandler = new Handler(getMainLooper());
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "No internet connection! Please, try again later", Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }
