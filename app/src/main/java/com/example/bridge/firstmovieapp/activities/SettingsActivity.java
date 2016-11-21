@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
+import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static android.R.attr.id;
 
 
 public class SettingsActivity extends ActionBarActivity {
@@ -28,5 +31,14 @@ public class SettingsActivity extends ActionBarActivity {
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
