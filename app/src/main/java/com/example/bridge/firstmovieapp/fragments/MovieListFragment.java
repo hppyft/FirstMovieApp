@@ -25,10 +25,14 @@ import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
 public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnSettingsChanged {
 
+    private static final String INITIAL_POSITION = "initial_position";
     private RecyclerView mRecyclerView;
     public MovieListCursorAdapter mRecyclerCursorAdapter;
     public SettingsChangedBroadcastReceiver settingsChangedBroadcastReceiver;
     private final String LOG_TAG = MovieListFragment.class.getSimpleName();
+    private int mLastFirstVisiblePosition;
+    private int mTopView;
+    private int currentVisiblePosition;
 
     private static final int MOVIE_LIST_LOADER = 0;
     public static final String[] MOVIE_LIST_COLUMNS = {
@@ -55,7 +59,8 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate MovieList CALLED");
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(MOVIE_LIST_LOADER, null, this);
         settingsChangedBroadcastReceiver.register(getContext());
@@ -64,32 +69,31 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onStart() {
+        Log.d(LOG_TAG, "onStart MovieList CALLED");
         super.onStart();
         SyncAdapter.syncImmediately(getContext());
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-
+        Log.d(LOG_TAG, "onCreateOptionsMenu MovieList CALLED");
         inflater.inflate(R.menu.menu_movie_list, menu);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        Log.d(LOG_TAG, "onCreateView MovieList CALLED");
         View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_fragment_main);
         mRecyclerCursorAdapter = new MovieListCursorAdapter(getActivity());
         mRecyclerView.setAdapter(mRecyclerCursorAdapter);
-        Log.d(LOG_TAG, "ONCREATEVIEW CALLED");
-
         return rootView;
     }
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "LOADER CREATED");
+        Log.d(LOG_TAG, "onCreateLoader MovieList CALLED");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String sort = prefs.getString(getContext().getString(R.string.pref_sort_key),
                 getContext().getString(R.string.pref_sort_popular));
@@ -123,24 +127,67 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(LOG_TAG, "onLoadFinished MovieList CALLED");
         mRecyclerCursorAdapter.setMovieCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
+        Log.d(LOG_TAG, "onLoaderReset MovieList CALLED");
         mRecyclerCursorAdapter.setMovieCursor(null);
     }
 
     @Override
     public void resetMovieList() {
+        Log.d(LOG_TAG, "resetMovieList MovieList CALLED");
         getLoaderManager().restartLoader(MOVIE_LIST_LOADER, null, this);
     }
 
     @Override
     public void onDestroy() {
+        Log.d(LOG_TAG, "onDestroy MovieList CALLED");
         super.onDestroy();
-        if(settingsChangedBroadcastReceiver.registered==true) {
+        if (settingsChangedBroadcastReceiver.registered == true) {
             settingsChangedBroadcastReceiver.unregister(getContext());
         }
     }
+
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+////        mLastFirstVisiblePosition= ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+////        View startView = mRecyclerView.getChildAt(0);
+////        mTopView = (startView == null) ? 0 : (startView.getTop() - mRecyclerView.getPaddingTop());
+//        currentVisiblePosition = 0;
+//        currentVisiblePosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+//    }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+////        if (mLastFirstVisiblePosition!= -1) {
+////            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(mLastFirstVisiblePosition, mTopView);
+////        }
+//        ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
+//        currentVisiblePosition = 0;
+//    }
+
+    //    private static final String BUNDLE_RECYCLER_LAYOUT = "MovieListFragment.mRecyclerView.fragment_movie_list";
+//
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//
+//        if(savedInstanceState != null)
+//        {
+//            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
+//            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
+//        }
+//    }
+//
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
+//    }
 }

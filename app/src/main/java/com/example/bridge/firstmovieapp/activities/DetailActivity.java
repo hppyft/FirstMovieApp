@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.data.Provider;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
-import com.example.bridge.firstmovieapp.R;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -18,6 +19,9 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 
 public class DetailActivity extends ActionBarActivity {
+
+    private final String LOG_TAG = DetailActivity.class.getSimpleName();
+
 
     public DetailActivity(){
     }
@@ -52,6 +56,11 @@ public class DetailActivity extends ActionBarActivity {
             return true;
         }
 
+        if (id == android.R.id.home) {
+            onBackPressed();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -60,4 +69,9 @@ public class DetailActivity extends ActionBarActivity {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.d(LOG_TAG, "onBackPressed DetailAct CALLED");
+        super.onBackPressed();
+    }
 }

@@ -92,6 +92,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     public DetailFragment() {
+        Log.d(LOG_TAG, "DetailFragment DetailFrag CALLED");
         mTrailerListChangedBroadcastReceiver = new TrailerListChangedBroadcastReceiver(this);
         mReviewListChangedBroadcastReceiver = new ReviewListChangedBroadcastReceiver(this);
     }
@@ -99,6 +100,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView DetailFrag CALLED");
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         this.favoriteCheckBox = (CheckBox) rootView.findViewById(R.id.favorite_check_box);
         this.title = (TextView) rootView.findViewById(R.id.detail_title);
@@ -152,6 +154,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        Log.d(LOG_TAG, "onCreateOptionsMenu DetailFrag CALLED");
         inflater.inflate(R.menu.menu_detail_fragment, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
@@ -162,6 +165,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
 
     }
+
     private Intent createShareIntent() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
@@ -172,6 +176,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
 
     public void showMovie(Movie movie) {
+        Log.d(LOG_TAG, "showMovie DetailFrag CALLED");
         mMovie = movie;
         this.favoriteCheckBox.setVisibility(View.VISIBLE);
         this.favoriteCheckBox.setText(R.string.favorite_label);
@@ -204,6 +209,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     public void startUpdaters(){
+        Log.d(LOG_TAG, "startUpdaters DetailFrag CALLED");
         /**
          * Here we will replace the AsyncTask with a IntentService
          */
@@ -220,6 +226,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void updateTrailerList() {
+        Log.d(LOG_TAG, "updateTrailerList DetailFrag CALLED");
         Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
                 TRAILER_LIST_COLUMNS,
                 MovieContract.TrailersEntry.COLUMN_MOVIE_ID+"=? ",
@@ -231,6 +238,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void updateReviewList(){
+        Log.d(LOG_TAG, "updateReviewList DetailFrag CALLED");
         Cursor cursor = getContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
                 REVIEW_LIST_COLUMNS,
                 MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? ",
@@ -242,6 +250,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        Log.d(LOG_TAG, "onCreate DetailFrag CALLED");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         mTrailerListChangedBroadcastReceiver.register(getContext());
@@ -251,6 +260,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onDestroy() {
+        Log.d(LOG_TAG, "onDestroy DetailFrag CALLED");
         super.onDestroy();
         mTrailerListChangedBroadcastReceiver.unregister(getContext());
         mReviewListChangedBroadcastReceiver.unregister(getContext());
@@ -258,6 +268,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Log.d(LOG_TAG, "onCreateLoader DetailFrag CALLED");
 
         if (getArguments() != null){
             mUri = getArguments().getParcelable(ARG_MOVIE_URI);
@@ -275,6 +286,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        Log.d(LOG_TAG, "onLoadFinished DetailFrag CALLED");
         mCursor = data;
        if(mCursor.moveToFirst()) {
            Movie movie = new Movie();
@@ -308,6 +320,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+        Log.d(LOG_TAG, "onLoaderReset DetailFrag CALLED");
         mCursor = null;
     }
 }

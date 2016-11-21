@@ -4,13 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
-import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
 import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             mTwoPane=false;
         }
 
-        MovieListFragment movieListFragment = ((MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list));
+//        MovieListFragment movieListFragment = ((MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list));
 
         SyncAdapter.initializeSyncAdapter(this);
     }
@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
 
