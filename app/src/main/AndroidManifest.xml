@@ -47,8 +47,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data android:scheme="http" />
                 <data android:scheme="https" />
-                <data android:host="www.themoviedb.org" />
-                <data android:pathPattern="/movie/.*"/>
+                <data android:host="the_movie_db_host" />
+                <data android:pathPattern="the_movie_db_movie_path_pattern"/>
             </intent-filter>
         </activity>
         <provider

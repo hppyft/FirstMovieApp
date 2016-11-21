@@ -9,11 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -85,6 +88,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public TextView trailerLabel;
     public TextView reviewLabel;
 
+    private ShareActionProvider mShareActionProvider;
+
 
     public DetailFragment() {
         mTrailerListChangedBroadcastReceiver = new TrailerListChangedBroadcastReceiver(this);
@@ -148,7 +153,23 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_detail_fragment, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+
+        if(mMovie!=null){
+            mShareActionProvider.setShareIntent(createShareIntent());
+        }
+
     }
+    private Intent createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_message)+" "+"http://"+getString(R.string.the_movie_db_host)+"/movie/"+mMovie.id);
+        return shareIntent;
+    }
+
 
     public void showMovie(Movie movie) {
         mMovie = movie;
@@ -157,7 +178,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.title.setText(movie.original_title);
         Utility ut = new Utility(getActivity());
         if(ut.isConnectionAvailable()) {
-            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" + movie.poster_path).into(this.poster);
+            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" +
+                    movie.poster_path).into(this.poster);
         }
         else{
             this.poster.setImageResource(R.drawable.blank_poster);
@@ -278,6 +300,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
            Intent intent = new Intent(getContext(), LooseMovieService.class);
            intent.putExtra(ARG_MOVIE_ID, idFromUri);
            getActivity().startService(intent);
+       }
+       if(mShareActionProvider!=null){
+           mShareActionProvider.setShareIntent(createShareIntent());
        }
     }
 

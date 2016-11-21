@@ -18,7 +18,11 @@
     <string name="release_label">Release Date</string>
     <string name="trailer_label">Trailers</string>
     <string name="detail_review_label">Reviews</string>
-    <string name="content_authority">com.example.bridge.firstmovieapp</string>
-    <string name="sync_account_type">bridge.example.com</string>
-    <string name="movie_list_width">match parent</string>
+    <string name="content_authority" translatable="false">com.example.bridge.firstmovieapp</string>
+    <string name="sync_account_type" translatable="false">bridge.example.com</string>
+    <string name="action_share">Share</string>
+    <string name="the_movie_db_host" translatable="false">www.themoviedb.org</string>
+    <string name="the_movie_db_movie_path_pattern" translatable="false">/movie/.*</string>
+    <string name="share_message">Wow, I really want to watch this movie!!! </string>
+
 </resources>
