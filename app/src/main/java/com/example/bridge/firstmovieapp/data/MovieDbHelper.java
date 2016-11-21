@@ -33,9 +33,9 @@ public class MovieDbHelper extends SQLiteOpenHelper {
                 MoviesEntry.COLUMN_MOVIE_ID + " TEXT PRIMARY KEY," +
                 MoviesEntry.COLUMN_TITLE + " TEXT, " +
                 MoviesEntry.COLUMN_POSTER_PATH + " TEXT, " +
+                MoviesEntry.COLUMN_VOTE_AVERAGE + " NUMERIC, " +
                 MoviesEntry.COLUMN_OVERVIEW + " TEXT, " +
                 MoviesEntry.COLUMN_RELEASE_DATE + " TEXT, " +
-                MoviesEntry.COLUMN_VOTE_AVERAGE + " NUMERIC, " +
                 MoviesEntry.COLUMN_POPULARITY + " NUMERIC, " +
                 MoviesEntry.COLUMN_FAVORITE + " INTEGER" +
                 " );";

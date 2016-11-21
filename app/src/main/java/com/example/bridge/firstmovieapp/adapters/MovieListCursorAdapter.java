@@ -36,7 +36,7 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Uri uri = getItem(position);
+        final Uri uri = getItemUri(position);
         holder.mPosterView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +53,7 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
         }
     }
 
-    private Uri getItem(int position) {
+    private Uri getItemUri(int position) {
         mCursor.moveToPosition(position);
 //        Movie movie = new Movie();
 //        movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
@@ -61,7 +61,7 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
 //        movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
 //        movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
 //        movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
-//        movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE);
+//        movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE_DATE);
 //        movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
 //        movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
         long id = Long.parseLong(mCursor.getString(MovieListFragment.COL_MOVIE_ID));

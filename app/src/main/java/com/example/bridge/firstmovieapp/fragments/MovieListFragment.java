@@ -46,7 +46,7 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
     public static final int COL_POSTER_PATH = 2;
     public static final int COL_VOTE_AVERAGE = 3;
     public static final int COL_OVERVIEW = 4;
-    public static final int COL_RELEASE = 5;
+    public static final int COL_RELEASE_DATE = 5;
     public static final int COL_POPULARITY = 6;
     public static final int COL_FAVORITE = 7;
 

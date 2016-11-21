@@ -37,6 +37,8 @@ import com.squareup.picasso.Picasso;
 
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
+import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_URI;
+import static com.example.bridge.firstmovieapp.fragments.MovieListFragment.MOVIE_LIST_COLUMNS;
 
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnTrailerListChanged, OnReviewListChanged {
 
@@ -149,6 +151,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     public void showMovie(Movie movie) {
+        mMovie = movie;
         this.favoriteCheckBox.setVisibility(View.VISIBLE);
         this.favoriteCheckBox.setText(R.string.favorite_label);
         this.title.setText(movie.original_title);
@@ -235,10 +238,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         if (getArguments() != null){
-            mUri = getArguments().getParcelable(ARG_MOVIE);
+            mUri = getArguments().getParcelable(ARG_MOVIE_URI);
             return new CursorLoader(getActivity(),
                     mUri,
-                    null,
+                    MOVIE_LIST_COLUMNS,
                     null,
                     null,
                     null);
@@ -258,7 +261,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
            movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
            movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
            movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
-           movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE);
+           movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE_DATE);
            movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
            movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
            showMovie(movie);

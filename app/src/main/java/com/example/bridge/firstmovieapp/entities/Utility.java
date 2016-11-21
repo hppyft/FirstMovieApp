@@ -45,7 +45,7 @@ public class Utility {
 ////            movie.poster_path = cursor.getString(MovieListFragment.COL_POSTER_PATH);
 ////            movie.vote_average = cursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
 ////            movie.overview = cursor.getString(MovieListFragment.COL_OVERVIEW);
-////            movie.release_date = cursor.getString(MovieListFragment.COL_RELEASE);
+////            movie.release_date = cursor.getString(MovieListFragment.COL_RELEASE_DATE);
 ////            movie.popularity = cursor.getFloat(MovieListFragment.COL_POPULARITY);
 ////            movie.favorite = cursor.getInt(MovieListFragment.COL_FAVORITE);
 //            return cursor;
