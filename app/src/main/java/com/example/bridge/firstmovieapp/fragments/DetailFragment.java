@@ -266,11 +266,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         if (getArguments() != null){
             mUri = getArguments().getParcelable(ARG_MOVIE_URI);
             if(mUri.toString().contains(getString(R.string.the_movie_db_host))){
-                String[] parts = mUri.getPath().split("[/]");
-                String[] idAndTitle = parts[parts.length-1].split("[-]");
-                String idFromUri = idAndTitle[0];
-                Log.d(LOG_TAG, "THE ID IS HERE "+idFromUri);
-                mUri = MovieContract.MoviesEntry.buildMovieUri(Long.parseLong(idFromUri));
+                String path = mUri.getLastPathSegment();
+                int index = path.indexOf('-');
+                if(index>-1){
+                    path = path.substring(0, index);
+                }
+                Log.d(LOG_TAG, "THE ID IS HERE "+path);
+                mUri = MovieContract.MoviesEntry.buildMovieUri(Long.parseLong(path));
             }
             return new CursorLoader(getActivity(),
                     mUri,
