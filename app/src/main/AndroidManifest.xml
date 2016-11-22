@@ -4,9 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -40,28 +40,32 @@
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity"/>
+                android:value=".activities.MainActivity" />
+
             <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="@string/the_movie_db_host" />
-                <data android:pathPattern="@string/the_movie_db_movie_path_pattern"/>
+                <data android:pathPattern="@string/the_movie_db_movie_path_pattern" />
             </intent-filter>
         </activity>
+
         <provider
-            android:authorities="@string/content_authority"
             android:name=".data.Provider"
+            android:authorities="@string/content_authority"
             android:exported="false"
             android:syncable="true" />
-        <service
-            android:name=".syncservice.AuthenticatorService"
-            >
+
+        <service android:name=".syncservice.AuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
@@ -69,23 +73,23 @@
         <!-- The SyncAdapter service -->
         <service
             android:name=".syncservice.SyncService"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
         </service>
         <service
             android:name=".syncservice.ReviewAndTrailerService"
-            android:enabled="true"
-            />
+            android:enabled="true" />
         <service
             android:name=".syncservice.LooseMovieService"
-            android:enabled="true"
-            />
+            android:enabled="true" />
+
+        <activity android:name=".activities.SearchActivity"></activity>
     </application>
 
 </manifest>

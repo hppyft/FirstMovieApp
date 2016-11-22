@@ -26,4 +26,7 @@ public interface IFetchDataFromMovieDB {
 
     @GET ("movie/{movie_id}"+"?api_key=" + BuildConfig.THE_MOVIE_DATABASE_API_KEY + "&language")
     Call<Movie> getLooseMovie(@Path("movie_id") String id, @Query("language") String language);
+
+    @GET ("/search/movie"+"?api_key=" + BuildConfig.THE_MOVIE_DATABASE_API_KEY + "&language" + "&query")
+    Call<MovieList> getMoviesFromQuery(@Query("language") String language, @Query("query") String query);
 }

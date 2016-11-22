@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
 import com.example.bridge.firstmovieapp.data.MovieContract.MoviesEntry;
-import com.example.bridge.firstmovieapp.data.MovieContract.TrailersEntry;
 import com.example.bridge.firstmovieapp.data.MovieContract.ReviewsEntry;
+import com.example.bridge.firstmovieapp.data.MovieContract.TrailersEntry;
 
 
 public class Provider extends ContentProvider{
@@ -24,6 +24,7 @@ public class Provider extends ContentProvider{
     public static String ARG_MOVIE = "movie";
     public static String ARG_MOVIE_URI = "movie_uri";
     public static String ARG_MOVIE_ID = "movie_id";
+    public static String ARG_KEY_WORD = "key_word";
 
     public static final String sMovieIdSelection =
             MoviesEntry.TABLE_NAME +

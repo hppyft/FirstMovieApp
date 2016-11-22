@@ -24,5 +24,4 @@
     <string name="the_movie_db_host" translatable="false">www.themoviedb.org</string>
     <string name="the_movie_db_movie_path_pattern" translatable="false">/movie/.*</string>
     <string name="share_message">Wow, I really want to watch this movie!!! </string>
-
 </resources>
