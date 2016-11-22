@@ -1,0 +1,18 @@
+<resources>
+    <string name="action_settings">Preferências</string>
+    <string name="title_activity_settings">Preferências</string>
+    <string name="title_activity_detail">Detalhes do Filme</string>
+
+    <string name="pref_sort_label">Ordem</string>
+    <string name="pref_sort_label_popular">Popular</string>
+    <string name="pref_sort_label_top_rated">Melhor Avaliados</string>
+    <string name="pref_sort_label_favorite">Favoritos</string>
+    <string name="favorite_label">Favorito</string>
+    <string name="overview_label">Sinopse</string>
+    <string name="rate_label">Avaliação</string>
+    <string name="release_label">Data de Lançamento</string>
+    <string name="trailer_label">Trailers</string>
+    <string name="detail_review_label">Críticas</string>
+    <string name="action_share">Compartilhar</string>
+    <string name="share_message">Nossa, eu quero muito assistir este filme!!! </string>
+</resources>

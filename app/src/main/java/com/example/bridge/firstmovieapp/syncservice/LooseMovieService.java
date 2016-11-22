@@ -3,6 +3,7 @@ package com.example.bridge.firstmovieapp.syncservice;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.bridge.firstmovieapp.entities.Movie;
@@ -21,13 +22,17 @@ import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
 
 public class LooseMovieService extends IntentService {
 
+    private final String LOG_TAG = LooseMovieService.class.getSimpleName();
+
     public LooseMovieService() {
         super("LooseMovieService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.d(LOG_TAG, "onHandleIntent LooseMovieService CALLED");
         if(Utility.isInternetAvailable()) {
+            Log.d(LOG_TAG, "Utility.isInternetAvailable  was true");
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.themoviedb.org/3/")
                     .addConverterFactory(GsonConverterFactory.create())
@@ -38,10 +43,12 @@ public class LooseMovieService extends IntentService {
             Movie movie = new Movie();
             try {
                 movie = movieCall.execute().body();
+                Log.d(LOG_TAG, "movieCall.execute().body() CALLED");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if(movie!=null) {
+                Log.d(LOG_TAG, "movie!=null");
                 MovieList movieList = new MovieList();
                 movieList.results = new ArrayList<>();
                 movieList.results.add(movie);

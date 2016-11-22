@@ -143,13 +143,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     public void setFavorite(Movie movie, boolean favorite){
-        ContentValues movieValues = new ContentValues();
-        movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE, favorite);
-        getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
-                movieValues,
-                MovieContract.MoviesEntry.COLUMN_MOVIE_ID+" = ?",
-                new String[]{movie.id});
-        getContext().getContentResolver().notifyChange(MovieContract.MoviesEntry.CONTENT_URI, null);
+        if(movie!=null) {
+            ContentValues movieValues = new ContentValues();
+            movieValues.put(MovieContract.MoviesEntry.COLUMN_FAVORITE, favorite);
+            getContext().getContentResolver().update(MovieContract.MoviesEntry.CONTENT_URI,
+                    movieValues,
+                    MovieContract.MoviesEntry.COLUMN_MOVIE_ID + " = ?",
+                    new String[]{movie.id});
+            getContext().getContentResolver().notifyChange(MovieContract.MoviesEntry.CONTENT_URI, null);
+        }
     }
 
     @Override
@@ -272,6 +274,13 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         if (getArguments() != null){
             mUri = getArguments().getParcelable(ARG_MOVIE_URI);
+            if(mUri.toString().contains(getString(R.string.the_movie_db_host))){
+                String[] parts = mUri.getPath().split("[/]");
+                String[] idAndTitle = parts[parts.length-1].split("[-]");
+                String idFromUri = idAndTitle[0];
+                Log.d(LOG_TAG, "THE ID IS HERE "+idFromUri);
+                mUri = MovieContract.MoviesEntry.buildMovieUri(Long.parseLong(idFromUri));
+            }
             return new CursorLoader(getActivity(),
                     mUri,
                     MOVIE_LIST_COLUMNS,
@@ -288,34 +297,31 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         Log.d(LOG_TAG, "onLoadFinished DetailFrag CALLED");
         mCursor = data;
-       if(mCursor.moveToFirst()) {
-           Movie movie = new Movie();
-           movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
-           movie.original_title = mCursor.getString(MovieListFragment.COL_TITLE);
-           movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
-           movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
-           movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
-           movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE_DATE);
-           movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
-           movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
-           showMovie(movie);
-           startUpdaters();
-           updateTrailerList();
-           updateReviewList();
-       }
-       else{
-           String[] parts = mUri.getPath().split("[/]");
-           String[] idAndTitle = parts[parts.length-1].split("[-]");
-           String idFromUri = idAndTitle[0];
-           Log.d(LOG_TAG, "THE ID IS HERE "+idFromUri);
-
-           Intent intent = new Intent(getContext(), LooseMovieService.class);
-           intent.putExtra(ARG_MOVIE_ID, idFromUri);
-           getActivity().startService(intent);
-       }
-       if(mShareActionProvider!=null){
-           mShareActionProvider.setShareIntent(createShareIntent());
-       }
+        if(mCursor!=null && mCursor.moveToFirst()) {
+            Movie movie = new Movie();
+            movie.id = mCursor.getString(MovieListFragment.COL_MOVIE_ID);
+            movie.original_title = mCursor.getString(MovieListFragment.COL_TITLE);
+            movie.poster_path = mCursor.getString(MovieListFragment.COL_POSTER_PATH);
+            movie.vote_average = mCursor.getFloat(MovieListFragment.COL_VOTE_AVERAGE);
+            movie.overview = mCursor.getString(MovieListFragment.COL_OVERVIEW);
+            movie.release_date = mCursor.getString(MovieListFragment.COL_RELEASE_DATE);
+            movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
+            movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
+            showMovie(movie);
+            startUpdaters();
+            updateTrailerList();
+            updateReviewList();
+        }
+        else{
+            String[] parts = mUri.toString().split("[/]");
+            String idFromUri = parts[parts.length-1];
+            Intent intent = new Intent(getContext(), LooseMovieService.class);
+            intent.putExtra(ARG_MOVIE_ID, idFromUri);
+            getActivity().startService(intent);
+        }
+        if(mShareActionProvider!=null){
+            mShareActionProvider.setShareIntent(createShareIntent());
+        }
     }
 
     @Override
