@@ -23,6 +23,7 @@ import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -50,7 +51,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
             //        String sort = prefs.getString(mContext.getString(R.string.pref_sort_key),
             //                mContext.getString(R.string.pref_sort_popular));
             String sortPopular = getContext().getString(R.string.pref_sort_popular);
-            Call<MovieList> movieListCallPopular = fetchDataFromMovieDB.getMovieList(sortPopular);
+            String language = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
+            Call<MovieList> movieListCallPopular = fetchDataFromMovieDB.getMovieList(sortPopular, language);
             MovieList listPopular = null;
             try {
                 listPopular = movieListCallPopular.execute().body();
@@ -59,7 +61,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
             }
 
             String sortTopRated = getContext().getString(R.string.pref_sort_top_rated);
-            Call<MovieList> movieListCallTopRated = fetchDataFromMovieDB.getMovieList(sortTopRated);
+            Call<MovieList> movieListCallTopRated = fetchDataFromMovieDB.getMovieList(sortTopRated, language);
             MovieList listTopRated = null;
             try {
                 listTopRated = movieListCallTopRated.execute().body();
@@ -79,7 +81,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
         for (Movie iterator : movieList.results) {
             ContentValues movieValues = new ContentValues();
             movieValues.put(MovieContract.MoviesEntry.COLUMN_MOVIE_ID, iterator.id);
-            movieValues.put(MovieContract.MoviesEntry.COLUMN_TITLE, iterator.original_title);
+            movieValues.put(MovieContract.MoviesEntry.COLUMN_TITLE, iterator.title);
             movieValues.put(MovieContract.MoviesEntry.COLUMN_POSTER_PATH, iterator.poster_path);
             movieValues.put(MovieContract.MoviesEntry.COLUMN_OVERVIEW, iterator.overview);
             movieValues.put(MovieContract.MoviesEntry.COLUMN_RELEASE_DATE, iterator.release_date);

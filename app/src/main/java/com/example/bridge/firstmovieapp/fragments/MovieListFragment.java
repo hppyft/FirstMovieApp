@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,7 +59,6 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "onCreate MovieList CALLED");
         super.onCreate(savedInstanceState);
         getLoaderManager().initLoader(MOVIE_LIST_LOADER, null, this);
         settingsChangedBroadcastReceiver.register(getContext());
@@ -69,21 +67,18 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onStart() {
-        Log.d(LOG_TAG, "onStart MovieList CALLED");
         super.onStart();
         SyncAdapter.syncImmediately(getContext());
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Log.d(LOG_TAG, "onCreateOptionsMenu MovieList CALLED");
         inflater.inflate(R.menu.menu_movie_list, menu);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d(LOG_TAG, "onCreateView MovieList CALLED");
         View rootView = inflater.inflate(R.layout.fragment_movie_list, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_fragment_main);
         mRecyclerCursorAdapter = new MovieListCursorAdapter(getActivity());
@@ -93,7 +88,6 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Log.d(LOG_TAG, "onCreateLoader MovieList CALLED");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String sort = prefs.getString(getContext().getString(R.string.pref_sort_key),
                 getContext().getString(R.string.pref_sort_popular));
@@ -127,25 +121,21 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        Log.d(LOG_TAG, "onLoadFinished MovieList CALLED");
         mRecyclerCursorAdapter.setMovieCursor(data);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
-        Log.d(LOG_TAG, "onLoaderReset MovieList CALLED");
         mRecyclerCursorAdapter.setMovieCursor(null);
     }
 
     @Override
     public void resetMovieList() {
-        Log.d(LOG_TAG, "resetMovieList MovieList CALLED");
         getLoaderManager().restartLoader(MOVIE_LIST_LOADER, null, this);
     }
 
     @Override
     public void onDestroy() {
-        Log.d(LOG_TAG, "onDestroy MovieList CALLED");
         super.onDestroy();
         if (settingsChangedBroadcastReceiver.registered == true) {
             settingsChangedBroadcastReceiver.unregister(getContext());

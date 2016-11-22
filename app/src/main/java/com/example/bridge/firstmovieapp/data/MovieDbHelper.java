@@ -17,7 +17,7 @@ import com.example.bridge.firstmovieapp.data.MovieContract.ReviewsEntry;
 
 public class MovieDbHelper extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     static final String DATABASE_NAME = "movies.db";
 

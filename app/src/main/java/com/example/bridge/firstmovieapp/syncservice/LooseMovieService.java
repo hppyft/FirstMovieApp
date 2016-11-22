@@ -3,7 +3,6 @@ package com.example.bridge.firstmovieapp.syncservice;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.bridge.firstmovieapp.entities.Movie;
@@ -13,6 +12,7 @@ import com.example.bridge.firstmovieapp.interfaces.IFetchDataFromMovieDB;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -30,25 +30,22 @@ public class LooseMovieService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(LOG_TAG, "onHandleIntent LooseMovieService CALLED");
         if(Utility.isInternetAvailable()) {
-            Log.d(LOG_TAG, "Utility.isInternetAvailable  was true");
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.themoviedb.org/3/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             String movieId = intent.getStringExtra(ARG_MOVIE_ID);
             IFetchDataFromMovieDB fetchDataFromMovieDB = retrofit.create(IFetchDataFromMovieDB.class);
-            Call<Movie> movieCall = fetchDataFromMovieDB.getLooseMovie(movieId);
+            String language = Locale.getDefault().getLanguage()+"-"+Locale.getDefault().getCountry();
+            Call<Movie> movieCall = fetchDataFromMovieDB.getLooseMovie(movieId, language);
             Movie movie = new Movie();
             try {
                 movie = movieCall.execute().body();
-                Log.d(LOG_TAG, "movieCall.execute().body() CALLED");
             } catch (IOException e) {
                 e.printStackTrace();
             }
             if(movie!=null) {
-                Log.d(LOG_TAG, "movie!=null");
                 MovieList movieList = new MovieList();
                 movieList.results = new ArrayList<>();
                 movieList.results.add(movie);

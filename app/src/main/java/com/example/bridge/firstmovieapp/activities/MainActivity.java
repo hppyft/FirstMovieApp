@@ -20,6 +20,7 @@ import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_URI;
 
 public class MainActivity extends AppCompatActivity implements CallbackMovieClicked {
 
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
 
