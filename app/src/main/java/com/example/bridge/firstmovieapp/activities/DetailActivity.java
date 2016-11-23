@@ -13,9 +13,6 @@ import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-/**
- * Created by bridge on 18/10/2016.
- */
 
 public class DetailActivity extends ActionBarActivity {
 
@@ -43,7 +40,7 @@ public class DetailActivity extends ActionBarActivity {
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_detail_activity, menu);
         return true;
     }
 

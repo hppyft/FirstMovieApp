@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.entities.Movie;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.entities.Utility;
@@ -61,7 +62,7 @@ public class LooseMovieService extends IntentService {
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Sorry, but this ID doesn't seem to exist in TheMovieDB database", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.movie_id_not_found), Toast.LENGTH_LONG).show();
                     }
                 });
             }
@@ -72,7 +73,7 @@ public class LooseMovieService extends IntentService {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    Toast.makeText(getApplicationContext(), "No internet connection! Please, try again later", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.no_internet_message), Toast.LENGTH_LONG).show();
                 }
             });
         }

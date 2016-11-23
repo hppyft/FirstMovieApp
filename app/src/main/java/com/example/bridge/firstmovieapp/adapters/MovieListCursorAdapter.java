@@ -65,7 +65,8 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
 //        movie.popularity = mCursor.getFloat(MovieListFragment.COL_POPULARITY);
 //        movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
         long id = Long.parseLong(mCursor.getString(MovieListFragment.COL_MOVIE_ID));
-        return MovieContract.MoviesEntry.buildMovieUri(id);
+        Uri uri = MovieContract.MoviesEntry.buildMovieUri(id);
+        return uri;
     }
 
     @Override

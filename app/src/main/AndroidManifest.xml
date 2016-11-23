@@ -88,8 +88,16 @@
         <service
             android:name=".syncservice.LooseMovieService"
             android:enabled="true" />
-
-        <activity android:name=".activities.SearchActivity"></activity>
+        <activity
+            android:name=".activities.SearchResultActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable"
+                android:value=".activities.SearchResultActivity" />
+        </activity>
     </application>
 
 </manifest>

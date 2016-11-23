@@ -24,14 +24,10 @@ import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
 public class MovieListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>, OnSettingsChanged {
 
-    private static final String INITIAL_POSITION = "initial_position";
     private RecyclerView mRecyclerView;
     public MovieListCursorAdapter mRecyclerCursorAdapter;
     public SettingsChangedBroadcastReceiver settingsChangedBroadcastReceiver;
     private final String LOG_TAG = MovieListFragment.class.getSimpleName();
-    private int mLastFirstVisiblePosition;
-    private int mTopView;
-    private int currentVisiblePosition;
 
     private static final int MOVIE_LIST_LOADER = 0;
     public static final String[] MOVIE_LIST_COLUMNS = {
@@ -73,7 +69,7 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_movie_list, menu);
+        inflater.inflate(R.menu.menu_movie_list_fragment, menu);
     }
 
     @Override
@@ -141,43 +137,4 @@ public class MovieListFragment extends Fragment implements LoaderManager.LoaderC
             settingsChangedBroadcastReceiver.unregister(getContext());
         }
     }
-
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-////        mLastFirstVisiblePosition= ((LinearLayoutManager) mRecyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-////        View startView = mRecyclerView.getChildAt(0);
-////        mTopView = (startView == null) ? 0 : (startView.getTop() - mRecyclerView.getPaddingTop());
-//        currentVisiblePosition = 0;
-//        currentVisiblePosition = ((LinearLayoutManager)mRecyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-//    }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-////        if (mLastFirstVisiblePosition!= -1) {
-////            ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPositionWithOffset(mLastFirstVisiblePosition, mTopView);
-////        }
-//        ((LinearLayoutManager) mRecyclerView.getLayoutManager()).scrollToPosition(currentVisiblePosition);
-//        currentVisiblePosition = 0;
-//    }
-
-    //    private static final String BUNDLE_RECYCLER_LAYOUT = "MovieListFragment.mRecyclerView.fragment_movie_list";
-//
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//
-//        if(savedInstanceState != null)
-//        {
-//            Parcelable savedRecyclerLayoutState = savedInstanceState.getParcelable(BUNDLE_RECYCLER_LAYOUT);
-//            mRecyclerView.getLayoutManager().onRestoreInstanceState(savedRecyclerLayoutState);
-//        }
-//    }
-//
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        outState.putParcelable(BUNDLE_RECYCLER_LAYOUT, mRecyclerView.getLayoutManager().onSaveInstanceState());
-//    }
 }

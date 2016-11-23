@@ -24,4 +24,9 @@
     <string name="the_movie_db_host" translatable="false">www.themoviedb.org</string>
     <string name="the_movie_db_movie_path_pattern" translatable="false">/movie/.*</string>
     <string name="share_message">Wow, I really want to watch this movie!!! </string>
+    <string name="search_title">Search</string>
+    <string name="search_hint">Search for a movie</string>
+    <string name="no_internet_message">No internet connection! Please, try again later</string>
+    <string name="movie_id_not_found">Sorry, but this ID doesnt seem to exist in TheMovieDB database</string>
+    <string name="items_found">These are the movies your search has found</string>
 </resources>

@@ -15,4 +15,7 @@
     <string name="detail_review_label">Críticas</string>
     <string name="action_share">Compartilhar</string>
     <string name="share_message">Nossa, eu quero muito assistir este filme!!! </string>
+    <string name="search_title">Procurar</string>
+    <string name="search_hint">Procure por um filme</string>
+    <string name="items_found">Estes são os filmes que sua busca achou</string>
 </resources>
