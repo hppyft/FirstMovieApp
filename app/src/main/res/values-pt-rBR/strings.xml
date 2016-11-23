@@ -18,4 +18,5 @@
     <string name="search_title">Procurar</string>
     <string name="search_hint">Procure por um filme</string>
     <string name="items_found">Estes são os filmes que sua busca achou</string>
+    <string name="no_movies_found">Nenhum filme foi encontrado</string>
 </resources>

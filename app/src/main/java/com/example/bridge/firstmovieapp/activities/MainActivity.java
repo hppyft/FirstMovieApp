@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -14,7 +13,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
+import com.example.bridge.firstmovieapp.asynctasks.MoviesFromQueryAsyncTask;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
+import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
+import com.example.bridge.firstmovieapp.fragments.SearchFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
 import com.example.bridge.firstmovieapp.syncservice.SyncAdapter;
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 //        MovieListFragment movieListFragment = ((MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list));
 
         SyncAdapter.initializeSyncAdapter(this);
+        handleSearchIntent(getIntent());
     }
 
     @Override
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
         MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(
-                new ComponentName(getApplicationContext(), SearchResultActivity.class)));
+                new ComponentName(getApplicationContext(), MainActivity.class)));
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -71,8 +74,10 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             return true;
         }
 
-        if (id == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
+        if (id == R.id.home){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_movie_list, new MovieListFragment())
+                    .commit();
             return true;
         }
 
@@ -101,6 +106,24 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             Intent intent = new Intent(this, DetailActivity.class);
             intent.setData(uri);
             this.startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleSearchIntent(getIntent());
+    }
+
+    private void handleSearchIntent(Intent intent){
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
+            SearchFragment searchFragment = new SearchFragment();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_movie_list, searchFragment)
+                    .commit();
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment);
+            asyncTask.execute(query);
         }
     }
 }
