@@ -28,7 +28,8 @@
     <string name="search_hint">Search for a movie</string>
     <string name="no_internet_message">No internet connection! Please, try again later</string>
     <string name="movie_id_not_found">Sorry, but this ID doesnt seem to exist in TheMovieDB database</string>
-    <string name="items_found">These are the movies your search has found</string>
+    <string name="movies_found_with_query">Movies with word:</string>
     <string name="no_movies_found">No movies were found</string>
+    <string name="movies_found">Movies found</string>
 
 </resources>

@@ -12,8 +12,7 @@
     android:background="@color/carbonGrey">
 
     <TextView
-        android:id="@+id/items_found_label"
-        android:text="@string/items_found"
+        android:id="@+id/movies_found_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -34,6 +33,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/items_found_label"/>
+        android:layout_below="@id/movies_found_label"/>
 
 </RelativeLayout>

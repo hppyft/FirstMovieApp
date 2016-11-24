@@ -17,6 +17,7 @@
     <string name="share_message">Nossa, eu quero muito assistir este filme!!! </string>
     <string name="search_title">Procurar</string>
     <string name="search_hint">Procure por um filme</string>
-    <string name="items_found">Estes são os filmes que sua busca achou</string>
+    <string name="movies_found_with_query">Filmes com a palavra:</string>
     <string name="no_movies_found">Nenhum filme foi encontrado</string>
+    <string name="movies_found">Filmes encontrados</string>
 </resources>

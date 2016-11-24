@@ -224,13 +224,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void updateTrailerList() {
         Log.d(LOG_TAG, "updateTrailerList DetailFrag CALLED");
-        Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
-                TRAILER_LIST_COLUMNS,
-                MovieContract.TrailersEntry.COLUMN_MOVIE_ID+"=? ",
-                new String[]{mMovie.id},
-                null);
+//        if (mMovie != null) {
+            Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
+                    TRAILER_LIST_COLUMNS,
+                    MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=? ",
+                    new String[]{mMovie.id},
+                    null);
 
-        mTrailerRecyclerAdapter.setMovieCursor(cursor);
+            mTrailerRecyclerAdapter.setMovieCursor(cursor);
+//        }
     }
 
     @Override
@@ -246,10 +248,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onCreate(Bundle savedInstanceState){
+        Log.d(LOG_TAG, "on create CALLED");
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mTrailerListChangedBroadcastReceiver.register(getContext());
-        mReviewListChangedBroadcastReceiver.register(getContext());
+        Bundle args = getArguments();
+        if (args!=null && args.getParcelable(ARG_MOVIE_URI)!=null) {
+            mUri = args.getParcelable(ARG_MOVIE_URI);
+            setUriAndInitLoader(mUri);
+        }
+    }
+
+    public void setUriAndInitLoader(Uri uri){
+        this.mUri = uri;
         getLoaderManager().initLoader(DETAIL_FRAGMENT_LOADER, null, this);
     }
 
@@ -261,28 +271,36 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        mTrailerListChangedBroadcastReceiver.unregister(getContext());
+        mReviewListChangedBroadcastReceiver.unregister(getContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTrailerListChangedBroadcastReceiver.register(getContext());
+        mReviewListChangedBroadcastReceiver.register(getContext());
+    }
+
+    @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        if (getArguments() != null){
-            mUri = getArguments().getParcelable(ARG_MOVIE_URI);
-            if(mUri.toString().contains(getString(R.string.the_movie_db_host))){
-                String path = mUri.getLastPathSegment();
-                int index = path.indexOf('-');
-                if(index>-1){
-                    path = path.substring(0, index);
-                }
-                Log.d(LOG_TAG, "THE ID IS HERE "+path);
-                mUri = MovieContract.MoviesEntry.buildMovieUri(Long.parseLong(path));
+        if(mUri.toString().contains(getString(R.string.the_movie_db_host))){
+            String path = mUri.getLastPathSegment();
+            int index = path.indexOf('-');
+            if(index>-1){
+                path = path.substring(0, index);
             }
-            return new CursorLoader(getActivity(),
-                    mUri,
-                    MOVIE_LIST_COLUMNS,
-                    null,
-                    null,
-                    null);
+            Log.d(LOG_TAG, "THE ID IS HERE "+path);
+            mUri = MovieContract.MoviesEntry.buildMovieUri(Long.parseLong(path));
         }
-
-        return null;
+        return new CursorLoader(getActivity(),
+                mUri,
+                MOVIE_LIST_COLUMNS,
+                null,
+                null,
+                null);
     }
 
     @Override
@@ -300,8 +318,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             movie.favorite = mCursor.getInt(MovieListFragment.COL_FAVORITE);
             showMovie(movie);
             startUpdaters();
-            updateTrailerList();
-            updateReviewList();
         }
         else{
             String[] parts = mUri.toString().split("[/]");
@@ -309,9 +325,6 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             Intent intent = new Intent(getContext(), LooseMovieService.class);
             intent.putExtra(ARG_MOVIE_ID, idFromUri);
             getActivity().startService(intent);
-        }
-        if(mShareActionProvider!=null){
-            mShareActionProvider.setShareIntent(createShareIntent());
         }
     }
 

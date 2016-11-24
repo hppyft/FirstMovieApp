@@ -95,9 +95,11 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             Bundle args = new Bundle();
             args.putParcelable(ARG_MOVIE_URI, uri);
 
+//            DetailFragment detailFragment = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+//            detailFragment.setUriAndInitLoader(uri);
+
             DetailFragment detailFragment = new DetailFragment();
             detailFragment.setArguments(args);
-
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_detail_container, detailFragment, DETAILFRAGMENT_TAG)
                     .commit();
@@ -117,11 +119,14 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 
     private void handleSearchIntent(Intent intent){
         if (Intent.ACTION_SEARCH.equals(intent.getAction())){
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            Bundle args = new Bundle();
+            args.putCharSequence(SearchManager.QUERY, query);
             SearchFragment searchFragment = new SearchFragment();
+            searchFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_movie_list, searchFragment)
                     .commit();
-            String query = intent.getStringExtra(SearchManager.QUERY);
             MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment);
             asyncTask.execute(query);
         }
