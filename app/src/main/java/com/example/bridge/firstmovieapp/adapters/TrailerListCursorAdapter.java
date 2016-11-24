@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.entities.Trailer;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
-import com.squareup.picasso.Picasso;
 
 /**
  * Created by bridge on 31/10/2016.
@@ -51,7 +51,16 @@ public class TrailerListCursorAdapter extends RecyclerView.Adapter<TrailerListCu
         //To get a thumbnail from a youtube video just go to http://img.youtube.com/vi/[video-id]/[thumbnail-number].jpg
         //thumbnail-number can go from 0 to 3
 //        holder.mTrailerImage.setImageResource(R.color.transparent);
-        Picasso.with(activity.getBaseContext()).load("http://img.youtube.com/vi/" + trailer.key + "/0.jpg").error(R.drawable.blank_youtube_video).into(holder.mTrailerImage);
+//        Picasso.with(activity.getBaseContext()).load("http://img.youtube.com/vi/" + trailer.key + "/0.jpg").error(R.drawable.blank_youtube_video).into(holder.mTrailerImage);
+        Glide.with(activity.getBaseContext()).
+                load("http://img.youtube.com/vi/" +
+                        trailer.key +
+                        "/0.jpg")
+                .fitCenter()
+                .placeholder(R.drawable.blank_youtube_video)
+                .crossFade()
+                .into(holder.mTrailerImage);
+
 
     }
 

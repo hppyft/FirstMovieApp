@@ -10,12 +10,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.Utility;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
-import com.squareup.picasso.Picasso;
 
 
 public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursorAdapter.ViewHolder>{
@@ -45,7 +45,14 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
         });
         Utility ut = new Utility(activity);
         if(ut.isConnectionAvailable()) {
-            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mCursor.getString(MovieListFragment.COL_POSTER_PATH)).into(holder.mPosterView);
+//            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mCursor.getString(MovieListFragment.COL_POSTER_PATH)).into(holder.mPosterView);
+            Glide.with(activity.getBaseContext()).
+                    load("http://image.tmdb.org/t/p/w185" +
+                            mCursor.getString(MovieListFragment.COL_POSTER_PATH))
+                    .fitCenter()
+                    .placeholder(R.drawable.blank_poster)
+                    .crossFade()
+                    .into(holder.mPosterView);
         }
         else{
             holder.mPosterView.setImageResource(R.drawable.blank_poster);

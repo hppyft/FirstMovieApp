@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.ReviewListCursorAdapter;
 import com.example.bridge.firstmovieapp.adapters.TrailerListCursorAdapter;
@@ -36,7 +37,6 @@ import com.example.bridge.firstmovieapp.interfaces.OnReviewListChanged;
 import com.example.bridge.firstmovieapp.interfaces.OnTrailerListChanged;
 import com.example.bridge.firstmovieapp.syncservice.LooseMovieService;
 import com.example.bridge.firstmovieapp.syncservice.ReviewAndTrailerService;
-import com.squareup.picasso.Picasso;
 
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE;
 import static com.example.bridge.firstmovieapp.data.Provider.ARG_MOVIE_ID;
@@ -181,8 +181,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.title.setText(movie.title);
         Utility ut = new Utility(getActivity());
         if(ut.isConnectionAvailable()) {
-            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" +
-                    movie.poster_path).into(this.poster);
+//            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" +
+//                    movie.poster_path).into(this.poster);
+            Glide.with(getActivity().getBaseContext()).
+                    load("http://image.tmdb.org/t/p/w185" +
+                            movie.poster_path)
+                    .fitCenter()
+                    .placeholder(R.drawable.blank_poster)
+                    .crossFade()
+                    .into(this.poster);
         }
         else{
             this.poster.setImageResource(R.drawable.blank_poster);

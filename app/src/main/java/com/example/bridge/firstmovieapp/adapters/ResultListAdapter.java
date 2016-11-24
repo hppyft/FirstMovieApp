@@ -8,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.data.MovieContract;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.interfaces.CallbackMovieClicked;
-import com.squareup.picasso.Picasso;
 
 public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.ViewHolder> {
     public Activity mActivity;
@@ -37,7 +37,14 @@ public class ResultListAdapter extends RecyclerView.Adapter<ResultListAdapter.Vi
                 ((CallbackMovieClicked) mActivity).onItemSelected(uri);
             }
         });
-        Picasso.with(mActivity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mMovieList.results.get(position).poster_path).into(holder.mPosterView);
+//        Picasso.with(mActivity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mMovieList.results.get(position).poster_path).into(holder.mPosterView);
+        Glide.with(mActivity.getBaseContext()).
+                load("http://image.tmdb.org/t/p/w185" +
+                        mMovieList.results.get(position).poster_path)
+                .fitCenter()
+                .placeholder(R.drawable.blank_poster)
+                .crossFade()
+                .into(holder.mPosterView);
     }
 
     private Uri getUriByPosition(int position){
