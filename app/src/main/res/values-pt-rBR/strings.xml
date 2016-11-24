@@ -1,7 +1,7 @@
 <resources>
     <string name="action_settings">Preferências</string>
     <string name="title_activity_settings">Preferências</string>
-    <string name="title_activity_detail">Detalhes do Filme</string>
+    <string name="title_activity_detail">Detalhes</string>
 
     <string name="pref_sort_label">Ordem</string>
     <string name="pref_sort_label_popular">Popular</string>
@@ -20,4 +20,7 @@
     <string name="movies_found_with_query">Filmes com a palavra:</string>
     <string name="no_movies_found">Nenhum filme foi encontrado</string>
     <string name="movies_found">Filmes encontrados</string>
+    <string name="no_trailers_label">Nenhum trailer encontrado</string>
+    <string name="no_reviews_label">Nenhuma crítica encontrada</string>
+
 </resources>

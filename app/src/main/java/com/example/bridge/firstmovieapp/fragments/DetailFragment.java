@@ -193,8 +193,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.rate.setText(""+movie.vote_average);
         this.releaseLabel.setText(R.string.release_label);
         this.release.setText(movie.release_date);
-        this.trailerLabel.setText(R.string.trailer_label);
-        this.reviewLabel.setText(R.string.detail_review_label);
+        if(mTrailerRecyclerAdapter.getItemCount()!=0) {
+            this.trailerLabel.setText(R.string.trailer_label);
+        }
+        else{
+            this.trailerLabel.setText(R.string.no_trailers_label);
+        }
+        if(mReviewRecyclerAdapter.getItemCount()!=0) {
+            this.reviewLabel.setText(R.string.detail_review_label);
+        }
+        else{
+            this.reviewLabel.setText(R.string.no_reviews_label);
+        }
         if (movie.favorite==1){
             this.favoriteCheckBox.setChecked(true);
         }
@@ -202,18 +212,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             this.favoriteCheckBox.setChecked(false);
         }
         else{
-            System.out.println("THE VALUE OF FAVORITE OBJECT IS "+movie.favorite);
+            Log.d(LOG_TAG, "THE VALUE OF FAVORITE OBJECT IS "+movie.favorite);
         }
     }
 
     public void startUpdaters(){
-         /**
-         * Here we will replace the AsyncTask with a IntentService
-         */
-//        TrailersAsyncTask trailersAsyncTask = new TrailersAsyncTask(this, getContext(), mMovie);
-//        trailersAsyncTask.execute();
-//        ReviewAsyncTask reviewAsyncTask = new ReviewAsyncTask(this, getContext(), mMovie);
-//        reviewAsyncTask.execute();
         if(null!=mMovie) {
             Intent intent = new Intent(getContext(), ReviewAndTrailerService.class);
             intent.putExtra(ARG_MOVIE, mMovie);
@@ -224,15 +227,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void updateTrailerList() {
         Log.d(LOG_TAG, "updateTrailerList DetailFrag CALLED");
-//        if (mMovie != null) {
-            Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
-                    TRAILER_LIST_COLUMNS,
-                    MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=? ",
-                    new String[]{mMovie.id},
-                    null);
+        Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
+                TRAILER_LIST_COLUMNS,
+                MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=? ",
+                new String[]{mMovie.id},
+                null);
 
-            mTrailerRecyclerAdapter.setMovieCursor(cursor);
-//        }
+        mTrailerRecyclerAdapter.setMovieCursor(cursor);
+        if(mTrailerRecyclerAdapter.getItemCount()!=0) {
+            this.trailerLabel.setText(R.string.trailer_label);
+        }
     }
 
     @Override
@@ -244,6 +248,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                 null);
 
         mReviewRecyclerAdapter.setMovieCursor(cursor);
+        if(mReviewRecyclerAdapter.getItemCount()!=0) {
+            this.reviewLabel.setText(R.string.detail_review_label);
+        }
     }
 
     @Override

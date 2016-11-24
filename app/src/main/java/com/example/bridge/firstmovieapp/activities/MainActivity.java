@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             mTwoPane=false;
         }
 
+        if(savedInstanceState==null){
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_movie_list_container, new MovieListFragment())
+                    .commit();
+        }
+
 //        MovieListFragment movieListFragment = ((MovieListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_movie_list));
 
         SyncAdapter.initializeSyncAdapter(this);
@@ -76,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 
         if (id == R.id.home){
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_movie_list, new MovieListFragment())
+                    .replace(R.id.fragment_movie_list_container, new MovieListFragment())
                     .commit();
             return true;
         }
@@ -125,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
             SearchFragment searchFragment = new SearchFragment();
             searchFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_movie_list, searchFragment)
+                    .replace(R.id.fragment_movie_list_container, searchFragment)
                     .commit();
             MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment);
             asyncTask.execute(query);
