@@ -227,29 +227,33 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void updateTrailerList() {
         Log.d(LOG_TAG, "updateTrailerList DetailFrag CALLED");
-        Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
-                TRAILER_LIST_COLUMNS,
-                MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=? ",
-                new String[]{mMovie.id},
-                null);
+        if(mMovie!=null) {
+            Cursor cursor = getContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
+                    TRAILER_LIST_COLUMNS,
+                    MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=? ",
+                    new String[]{mMovie.id},
+                    null);
 
-        mTrailerRecyclerAdapter.setMovieCursor(cursor);
-        if(mTrailerRecyclerAdapter.getItemCount()!=0) {
-            this.trailerLabel.setText(R.string.trailer_label);
+            mTrailerRecyclerAdapter.setMovieCursor(cursor);
+            if (mTrailerRecyclerAdapter.getItemCount() != 0) {
+                this.trailerLabel.setText(R.string.trailer_label);
+            }
         }
     }
 
     @Override
     public void updateReviewList(){
-        Cursor cursor = getContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
-                REVIEW_LIST_COLUMNS,
-                MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? ",
-                new String[]{mMovie.id},
-                null);
+        if(mMovie!=null) {
+            Cursor cursor = getContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
+                    REVIEW_LIST_COLUMNS,
+                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID + "=? ",
+                    new String[]{mMovie.id},
+                    null);
 
-        mReviewRecyclerAdapter.setMovieCursor(cursor);
-        if(mReviewRecyclerAdapter.getItemCount()!=0) {
-            this.reviewLabel.setText(R.string.detail_review_label);
+            mReviewRecyclerAdapter.setMovieCursor(cursor);
+            if (mReviewRecyclerAdapter.getItemCount() != 0) {
+                this.reviewLabel.setText(R.string.detail_review_label);
+            }
         }
     }
 
