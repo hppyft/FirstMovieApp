@@ -19,4 +19,7 @@
     <dimen name="mini_space_between_texts">3dp</dimen>
     <dimen name="no_space">0dp</dimen>
     <dimen name="smallest_readable_letter">15dp</dimen>
+    <dimen name="trailer_thumbnail_width">240dp</dimen>
+    <dimen name="trailer_thumbnail_height">180dp</dimen>
+    <dimen name="trailer_margin">16dp</dimen>
 </resources>

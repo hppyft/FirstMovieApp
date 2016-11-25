@@ -53,9 +53,11 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
                     .placeholder(R.drawable.blank_poster)
                     .crossFade()
                     .into(holder.mPosterView);
+            holder.mTitleView.setVisibility(View.INVISIBLE);
         }
         else{
             holder.mPosterView.setImageResource(R.drawable.blank_poster);
+            holder.mTitleView.setVisibility(View.VISIBLE);
             holder.mTitleView.setText(mCursor.getString(MovieListFragment.COL_TITLE));
         }
     }

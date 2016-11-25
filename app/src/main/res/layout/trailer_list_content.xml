@@ -6,10 +6,10 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/trailer_thumbnail_width"
+        android:layout_height="@dimen/trailer_thumbnail_height"
         android:id="@+id/trailer_image"
         android:layout_gravity="center_horizontal"
-        android:layout_marginRight="16dp"/>
+        android:layout_marginRight="@dimen/trailer_margin"/>
 
 </LinearLayout>

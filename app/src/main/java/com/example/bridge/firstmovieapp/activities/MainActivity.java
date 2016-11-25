@@ -29,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     private boolean mTwoPane;
     private static final String DETAILFRAGMENT_TAG = "DFTAG";
+    private static final String SEARCH_FRAG_TAG = "SFTAG";
+    private SearchView mSearchView;
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +63,27 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
-
+        this.mMenu = menu;
+        getMenuInflater().inflate(R.menu.menu_main_activity, mMenu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem menuItem = menu.findItem(R.id.search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(
+        MenuItem menuItem = mMenu.findItem(R.id.search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(
                 new ComponentName(getApplicationContext(), MainActivity.class)));
+//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                mSearchView.setIconified(true);
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
 
-        return super.onCreateOptionsMenu(menu);
+        return super.onCreateOptionsMenu(mMenu);
     }
 
     @Override
@@ -119,22 +134,40 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 
     @Override
     protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleSearchIntent(getIntent());
+        handleSearchIntent(intent);
     }
 
     private void handleSearchIntent(Intent intent){
         if (Intent.ACTION_SEARCH.equals(intent.getAction())){
+            mSearchView.setIconified(true);
+            mSearchView.clearFocus();
+            (mMenu.findItem(R.id.search)).collapseActionView();
             String query = intent.getStringExtra(SearchManager.QUERY);
             Bundle args = new Bundle();
             args.putCharSequence(SearchManager.QUERY, query);
             SearchFragment searchFragment = new SearchFragment();
             searchFragment.setArguments(args);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_movie_list_container, searchFragment)
+                    .replace(R.id.fragment_movie_list_container, searchFragment, SEARCH_FRAG_TAG)
+                    .addToBackStack(null)
                     .commit();
             MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment);
             asyncTask.execute(query);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+//        if(getSupportFragmentManager().getFragment(null, SEARCH_FRAG_TAG)==null) {
+//            super.onBackPressed();
+//        }
+//        else{
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_movie_list_container, new MovieListFragment())
+//                    .commit();
+//        }
+        if(!getSupportFragmentManager().popBackStackImmediate()){
+            super.onBackPressed();
         }
     }
 }
