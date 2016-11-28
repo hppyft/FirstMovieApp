@@ -22,5 +22,7 @@
     <string name="movies_found">Filmes encontrados</string>
     <string name="no_trailers_label">Nenhum trailer encontrado</string>
     <string name="no_reviews_label">Nenhuma crítica encontrada</string>
+    <string name="searching_trailers_label">Procurando por trailers</string>
+    <string name="searching_reviews_label">Procurando por críticas</string>
 
 </resources>

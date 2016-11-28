@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -86,7 +87,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public TextView releaseLabel;
     public TextView release;
     public TextView trailerLabel;
+    public ProgressBar trailerProgressBar;
     public TextView reviewLabel;
+    public ProgressBar reviewProgressBar;
 
     private ShareActionProvider mShareActionProvider;
 
@@ -110,12 +113,14 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.releaseLabel = (TextView) rootView.findViewById(R.id.detail_release_label);
         this.release = (TextView) rootView.findViewById(R.id.detail_release);
         this.trailerLabel = (TextView) rootView.findViewById(R.id.detail_trailer_label);
+        this.trailerProgressBar = (ProgressBar) rootView.findViewById(R.id.trailer_progress_bar);
 
         mTrailerRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_trailer_list);
         mTrailerRecyclerAdapter = new TrailerListCursorAdapter(getActivity());
         mTrailerRecyclerView.setAdapter(mTrailerRecyclerAdapter);
 
         this.reviewLabel = (TextView) rootView.findViewById(R.id.detail_review_label);
+        this.reviewProgressBar = (ProgressBar) rootView.findViewById(R.id.review_progress_bar);
 
         mReviewRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view_review_list);
         mReviewRecyclerAdapter = new ReviewListCursorAdapter(getActivity());
@@ -134,7 +139,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         });
 
         if(null==mMovie) {
-            this.favoriteCheckBox.setVisibility(View.INVISIBLE);
+            this.favoriteCheckBox.setVisibility(View.GONE);
+            this.trailerProgressBar.setVisibility(View.GONE);
+            this.reviewProgressBar.setVisibility(View.GONE);
         }
 
         return rootView;
@@ -200,18 +207,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.rate.setText(""+movie.vote_average);
         this.releaseLabel.setText(R.string.release_label);
         this.release.setText(movie.release_date);
-        if(mTrailerRecyclerAdapter.getItemCount()!=0) {
-            this.trailerLabel.setText(R.string.trailer_label);
-        }
-        else{
-            this.trailerLabel.setText(R.string.no_trailers_label);
-        }
-        if(mReviewRecyclerAdapter.getItemCount()!=0) {
-            this.reviewLabel.setText(R.string.detail_review_label);
-        }
-        else{
-            this.reviewLabel.setText(R.string.no_reviews_label);
-        }
+//        if(mTrailerRecyclerAdapter.getItemCount()!=0) {
+//            this.trailerLabel.setText(R.string.trailer_label);
+        this.trailerProgressBar.setVisibility(View.GONE);
+//        }
+//        else{
+//            this.trailerLabel.setText(R.string.searching_trailers_label);
+//            this.trailerProgressBar.setVisibility(View.VISIBLE);
+//        }
+//        if(mReviewRecyclerAdapter.getItemCount()!=0) {
+//            this.reviewLabel.setText(R.string.detail_review_label);
+        this.reviewProgressBar.setVisibility(View.GONE);
+//        }
+//        else{
+//            this.reviewLabel.setText(R.string.searching_reviews_label);
+//            this.reviewProgressBar.setVisibility(View.VISIBLE);
+//        }
         if (movie.favorite==1){
             this.favoriteCheckBox.setChecked(true);
         }
@@ -225,6 +236,22 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     public void startUpdaters(){
         if(null!=mMovie) {
+            if(mTrailerRecyclerAdapter.getItemCount()!=0) {
+                this.trailerLabel.setText(R.string.trailer_label);
+                this.trailerProgressBar.setVisibility(View.GONE);
+            }
+            else{
+                this.trailerLabel.setText(R.string.searching_trailers_label);
+                this.trailerProgressBar.setVisibility(View.VISIBLE);
+            }
+            if(mReviewRecyclerAdapter.getItemCount()!=0) {
+                this.reviewLabel.setText(R.string.detail_review_label);
+                this.reviewProgressBar.setVisibility(View.GONE);
+            }
+            else{
+                this.reviewLabel.setText(R.string.searching_reviews_label);
+                this.reviewProgressBar.setVisibility(View.VISIBLE);
+            }
             Intent intent = new Intent(getContext(), ReviewAndTrailerService.class);
             intent.putExtra(ARG_MOVIE, mMovie);
             getActivity().startService(intent);
@@ -244,6 +271,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mTrailerRecyclerAdapter.setMovieCursor(cursor);
             if (mTrailerRecyclerAdapter.getItemCount() != 0) {
                 this.trailerLabel.setText(R.string.trailer_label);
+                this.trailerProgressBar.setVisibility(View.GONE);
+            }
+            else{
+                this.trailerLabel.setText(R.string.no_trailers_label);
+                this.trailerProgressBar.setVisibility(View.GONE);
             }
         }
     }
@@ -260,6 +292,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mReviewRecyclerAdapter.setMovieCursor(cursor);
             if (mReviewRecyclerAdapter.getItemCount() != 0) {
                 this.reviewLabel.setText(R.string.detail_review_label);
+                this.reviewProgressBar.setVisibility(View.GONE);
+            }
+            else{
+                this.reviewLabel.setText(R.string.no_reviews_label);
+                this.reviewProgressBar.setVisibility(View.GONE);
             }
         }
     }

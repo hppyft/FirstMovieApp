@@ -58,31 +58,32 @@ public class ReviewAndTrailerService extends IntentService {
                 e.printStackTrace();
             }
 
-            if (null != mReviewList && !mReviewList.results.isEmpty()) {
+//            if (null != mReviewList && !mReviewList.results.isEmpty()) {
                 updateReviewsDB(mReviewList);
                 Intent ReviewBroadcastIntent = new Intent();
                 ReviewBroadcastIntent.setAction(REVIEW_CHANGED);
                 getBaseContext().sendBroadcast(ReviewBroadcastIntent);
-            }
-            if (null != mTrailerList && !mTrailerList.results.isEmpty()) {
+//            }
+//            if (null != mTrailerList && !mTrailerList.results.isEmpty()) {
                 updateTrailersDB(mTrailerList);
                 Intent TrailerBroadcastIntent = new Intent();
                 TrailerBroadcastIntent.setAction(TRAILER_CHANGED);
                 getBaseContext().sendBroadcast(TrailerBroadcastIntent);
-            }
+//            }
         }
     }
 
     private void updateReviewsDB (ReviewList reviewList){
-        getBaseContext().getContentResolver().delete(MovieContract.ReviewsEntry.CONTENT_URI,
-                MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=?",
-                new String[] {mMovie.id});
-        for(Review iterator: reviewList.results){
-            ContentValues reviewValues = new ContentValues();
-            reviewValues.put(MovieContract.ReviewsEntry.COLUMN_REVIEW_ID, iterator.id);
-            reviewValues.put(MovieContract.ReviewsEntry.COLUMN_MOVIE_ID, mMovie.id);
-            reviewValues.put(MovieContract.ReviewsEntry.COLUMN_AUTHOR, iterator.author);
-            reviewValues.put(MovieContract.ReviewsEntry.COLUMN_CONTENT, iterator.content);
+        if(null!=reviewList && !reviewList.results.isEmpty()) {
+            getBaseContext().getContentResolver().delete(MovieContract.ReviewsEntry.CONTENT_URI,
+                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID + "=?",
+                    new String[]{mMovie.id});
+            for (Review iterator : reviewList.results) {
+                ContentValues reviewValues = new ContentValues();
+                reviewValues.put(MovieContract.ReviewsEntry.COLUMN_REVIEW_ID, iterator.id);
+                reviewValues.put(MovieContract.ReviewsEntry.COLUMN_MOVIE_ID, mMovie.id);
+                reviewValues.put(MovieContract.ReviewsEntry.COLUMN_AUTHOR, iterator.author);
+                reviewValues.put(MovieContract.ReviewsEntry.COLUMN_CONTENT, iterator.content);
 //            Cursor cursor = getBaseContext().getContentResolver().query(MovieContract.ReviewsEntry.CONTENT_URI,
 //                    null,
 //                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? " +
@@ -102,18 +103,20 @@ public class ReviewAndTrailerService extends IntentService {
                 getBaseContext().getContentResolver().insert(MovieContract.ReviewsEntry.CONTENT_URI, reviewValues);
 //            }
 //            cursor.close();
+            }
         }
     }
 
     private void updateTrailersDB (TrailerList trailerList){
-        getBaseContext().getContentResolver().delete(MovieContract.TrailersEntry.CONTENT_URI,
-                MovieContract.TrailersEntry.COLUMN_MOVIE_ID+"=?",
-                new String[] {mMovie.id});
-        for(Trailer iterator: trailerList.results){
-            ContentValues trailersValues = new ContentValues();
-            trailersValues.put(MovieContract.TrailersEntry.COLUMN_TRAILER_ID, iterator.id);
-            trailersValues.put(MovieContract.TrailersEntry.COLUMN_MOVIE_ID, mMovie.id);
-            trailersValues.put(MovieContract.TrailersEntry.COLUMN_TRAILER_PATH, iterator.key);
+        if(null!=trailerList && !trailerList.results.isEmpty()) {
+            getBaseContext().getContentResolver().delete(MovieContract.TrailersEntry.CONTENT_URI,
+                    MovieContract.TrailersEntry.COLUMN_MOVIE_ID + "=?",
+                    new String[]{mMovie.id});
+            for (Trailer iterator : trailerList.results) {
+                ContentValues trailersValues = new ContentValues();
+                trailersValues.put(MovieContract.TrailersEntry.COLUMN_TRAILER_ID, iterator.id);
+                trailersValues.put(MovieContract.TrailersEntry.COLUMN_MOVIE_ID, mMovie.id);
+                trailersValues.put(MovieContract.TrailersEntry.COLUMN_TRAILER_PATH, iterator.key);
 //            Cursor cursor = getBaseContext().getContentResolver().query(MovieContract.TrailersEntry.CONTENT_URI,
 //                    null,
 //                    MovieContract.ReviewsEntry.COLUMN_MOVIE_ID+"=? " +
@@ -133,6 +136,7 @@ public class ReviewAndTrailerService extends IntentService {
                 getBaseContext().getContentResolver().insert(MovieContract.TrailersEntry.CONTENT_URI, trailersValues);
 //            }
 //            cursor.close();
+            }
         }
     }
 }

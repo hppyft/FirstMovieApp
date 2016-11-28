@@ -33,5 +33,7 @@
     <string name="movies_found">Movies found</string>
     <string name="no_trailers_label">No Trailers Found</string>
     <string name="no_reviews_label">No reviews found</string>
+    <string name="searching_trailers_label">Searching for trailer</string>
+    <string name="searching_reviews_label">Searching for reviews</string>
 
 </resources>

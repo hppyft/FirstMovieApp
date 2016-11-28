@@ -165,6 +165,13 @@
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/white"/>
 
+        <ProgressBar
+            android:id="@+id/trailer_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_trailer_list"
@@ -184,6 +191,13 @@
             fontPath= "fonts/chunkfive_print.ttf"
             android:textAppearance="?android:textAppearanceLarge"
             android:textColor="@color/white"/>
+
+        <ProgressBar
+            android:id="@+id/review_progress_bar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_review_list"
