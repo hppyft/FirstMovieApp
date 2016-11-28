@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.ResultListAdapter;
+import com.example.bridge.firstmovieapp.asynctasks.MoviesFromQueryAsyncTask;
 import com.example.bridge.firstmovieapp.entities.MovieList;
 import com.example.bridge.firstmovieapp.interfaces.OnMoviesFound;
 
@@ -31,7 +32,10 @@ public class SearchFragment extends Fragment implements OnMoviesFound {
         this.moviesFound = (TextView) rootView.findViewById(R.id.movies_found_label);
         Bundle args = getArguments();
         if(args!=null && args.containsKey(SearchManager.QUERY)) {
-            moviesFound.setText(getString(R.string.movies_found_with_query) + " " + args.get(SearchManager.QUERY));
+            String query = args.getString(SearchManager.QUERY);
+            moviesFound.setText(getString(R.string.movies_found_with_query) + " " + query);
+            MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(this, getContext());
+            asyncTask.execute(query);
         }
         else{
             moviesFound.setText(getString(R.string.movies_found));

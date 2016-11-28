@@ -13,7 +13,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.bridge.firstmovieapp.R;
-import com.example.bridge.firstmovieapp.asynctasks.MoviesFromQueryAsyncTask;
 import com.example.bridge.firstmovieapp.fragments.DetailFragment;
 import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
 import com.example.bridge.firstmovieapp.fragments.SearchFragment;
@@ -138,10 +137,8 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     }
 
     private void handleSearchIntent(Intent intent){
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())||getIntent().hasExtra(SearchManager.QUERY)){
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query = intent.getStringExtra(SearchManager.QUERY);
-//            getIntent().setAction(Intent.ACTION_SEARCH);
-            getIntent().putExtra(SearchManager.QUERY, query);
             if (mSearchView!=null) {
                 mSearchView.setIconified(true);
                 mSearchView.clearFocus();
@@ -155,30 +152,12 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
                     .replace(R.id.fragment_movie_list_container, searchFragment, SEARCH_FRAG_TAG)
                     .addToBackStack(null)
                     .commit();
-            MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment, this);
-            asyncTask.execute(query);
         }
     }
 
     @Override
     public void onBackPressed() {
-//        if(getSupportFragmentManager().getFragment(null, SEARCH_FRAG_TAG)==null) {
-//            super.onBackPressed();
-//        }
-//        else{
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.fragment_movie_list_container, new MovieListFragment())
-//                    .commit();
-//        }
-        if(getSupportFragmentManager().popBackStackImmediate()){
-            if(getIntent().hasExtra(SearchManager.QUERY)) {
-                getIntent().removeExtra(SearchManager.QUERY);
-            }
-//            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())){
-//
-//            }
-        }
-        else{
+        if(!getSupportFragmentManager().popBackStackImmediate()){
             super.onBackPressed();
         }
     }
