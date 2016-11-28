@@ -37,7 +37,7 @@ public class ReviewAndTrailerService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if(Utility.isInternetAvailable()) {
+        if(Utility.isInternetAvailable(getBaseContext())) {
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.themoviedb.org/3/")
                     .addConverterFactory(GsonConverterFactory.create())

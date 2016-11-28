@@ -40,7 +40,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
     @Override
     public void onPerformSync(Account account, Bundle extras, String authority, ContentProviderClient provider, SyncResult syncResult) {
-        if(Utility.isInternetAvailable()) {
+        if(Utility.isInternetAvailable(getContext())) {
             Log.d(LOG_TAG, "Starting sync");
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl("http://api.themoviedb.org/3/")

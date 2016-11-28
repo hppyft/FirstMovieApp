@@ -44,7 +44,7 @@ public class MovieListCursorAdapter extends RecyclerView.Adapter<MovieListCursor
             }
         });
         Utility ut = new Utility(activity);
-        if(ut.isConnectionAvailable()) {
+        if(ut.isConnectionAvailable(activity)) {
 //            Picasso.with(activity.getBaseContext()).load("http://image.tmdb.org/t/p/w185" + mCursor.getString(MovieListFragment.COL_POSTER_PATH)).into(holder.mPosterView);
             Glide.with(activity.getBaseContext()).
                     load("http://image.tmdb.org/t/p/w185" +

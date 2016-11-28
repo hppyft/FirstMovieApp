@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
                     .replace(R.id.fragment_movie_list_container, searchFragment, SEARCH_FRAG_TAG)
                     .addToBackStack(null)
                     .commit();
-            MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment);
+            MoviesFromQueryAsyncTask asyncTask = new MoviesFromQueryAsyncTask(searchFragment, this);
             asyncTask.execute(query);
         }
     }

@@ -180,7 +180,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         this.favoriteCheckBox.setText(R.string.favorite_label);
         this.title.setText(movie.title);
         Utility ut = new Utility(getActivity());
-        if(ut.isConnectionAvailable()) {
+        if(ut.isConnectionAvailable(getContext())) {
 //            Picasso.with(getActivity().getBaseContext()).load("http://image.tmdb.org/t/p/w185" +
 //                    movie.poster_path).into(this.poster);
             Glide.with(getActivity().getBaseContext()).

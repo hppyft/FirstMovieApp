@@ -21,15 +21,16 @@ public class Utility {
         this.context = context;
     }
 
-    public boolean isConnectionAvailable(){
+    public static boolean isConnectionAvailable(Context context){
         final ConnectivityManager connectivityManager = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE));
         return connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
-    public static boolean isInternetAvailable() {
+    public static boolean isInternetAvailable(Context context) {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com"); //You can replace it with your name
-            return !ipAddr.equals("");
+            boolean internetConnection = !ipAddr.equals("");
+            return internetConnection&&isConnectionAvailable(context);
 
         } catch (Exception e) {
             return false;

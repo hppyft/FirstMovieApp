@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.bridge.firstmovieapp.R;
 import com.example.bridge.firstmovieapp.adapters.ResultListAdapter;
@@ -42,10 +41,7 @@ public class SearchFragment extends Fragment implements OnMoviesFound {
 
     @Override
     public void showMoviesFound(MovieList movieList) {
-        if (null==movieList){
-            Toast.makeText(getContext(), getString(R.string.no_movies_found), Toast.LENGTH_LONG).show();
-        }
-        else {
+        if (null!=movieList){
             mRecyclerCursorAdapter.setMovieList(movieList);
         }
     }
