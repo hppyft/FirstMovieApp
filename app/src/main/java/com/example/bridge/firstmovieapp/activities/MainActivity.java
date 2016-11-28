@@ -138,11 +138,15 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
     }
 
     private void handleSearchIntent(Intent intent){
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
-            mSearchView.setIconified(true);
-            mSearchView.clearFocus();
-            (mMenu.findItem(R.id.search)).collapseActionView();
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())||getIntent().hasExtra(SearchManager.QUERY)){
             String query = intent.getStringExtra(SearchManager.QUERY);
+//            getIntent().setAction(Intent.ACTION_SEARCH);
+            getIntent().putExtra(SearchManager.QUERY, query);
+            if (mSearchView!=null) {
+                mSearchView.setIconified(true);
+                mSearchView.clearFocus();
+                (mMenu.findItem(R.id.search)).collapseActionView();
+            }
             Bundle args = new Bundle();
             args.putCharSequence(SearchManager.QUERY, query);
             SearchFragment searchFragment = new SearchFragment();
@@ -166,7 +170,15 @@ public class MainActivity extends AppCompatActivity implements CallbackMovieClic
 //                    .replace(R.id.fragment_movie_list_container, new MovieListFragment())
 //                    .commit();
 //        }
-        if(!getSupportFragmentManager().popBackStackImmediate()){
+        if(getSupportFragmentManager().popBackStackImmediate()){
+            if(getIntent().hasExtra(SearchManager.QUERY)) {
+                getIntent().removeExtra(SearchManager.QUERY);
+            }
+//            if (Intent.ACTION_SEARCH.equals(getIntent().getAction())){
+//
+//            }
+        }
+        else{
             super.onBackPressed();
         }
     }
