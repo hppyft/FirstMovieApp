@@ -71,8 +71,12 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter{
 
             MovieList movieList = new MovieList();
             movieList.results = new ArrayList<>();
-            movieList.results.addAll(listPopular.results);
-            movieList.results.addAll(listTopRated.results);
+            if (null!=listPopular && null!=listPopular.results) {
+                movieList.results.addAll(listPopular.results);
+            }
+            if (null!=listTopRated && null!=listTopRated.results) {
+                movieList.results.addAll(listTopRated.results);
+            }
             addMoviesToDB(getContext(), movieList);
         }
     }
