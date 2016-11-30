@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.ConnectivityManager;
 
 import com.example.bridge.firstmovieapp.data.MovieContract;
-import com.example.bridge.firstmovieapp.fragments.MovieListFragment;
+import com.example.bridge.firstmovieapp.presenters.MovieListPresenter;
 import com.example.bridge.firstmovieapp.syncservice.LooseMovieService;
 
 import java.net.InetAddress;
@@ -41,7 +41,7 @@ public class Utility {
     public Cursor getCursorByMovieId(String id) {
 
         Cursor cursor = context.getContentResolver().query(MovieContract.MoviesEntry.CONTENT_URI,
-                MovieListFragment.MOVIE_LIST_COLUMNS,
+                MovieListPresenter.MOVIE_LIST_COLUMNS,
                 MovieContract.MoviesEntry.COLUMN_MOVIE_ID + "=?",
                 new String[] {id},
                 null);
