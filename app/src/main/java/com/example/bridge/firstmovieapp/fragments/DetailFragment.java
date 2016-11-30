@@ -37,8 +37,8 @@ public class DetailFragment extends Fragment implements IDetailView {
     private IDetailPres mPresenter;
     public Movie mMovie;
     private ShareActionProvider mShareActionProvider;
-    public static final String TRAILER_CHANGED = "trailer_changed";
-    public static final int COL_TRAILER_ID = 0;
+    public static final String TRAILER_CHANGED = "trailer_changed"; //TODO COLOCAR NO SERVICE
+    public static final int COL_TRAILER_ID = 0; //TODO COLOCAR ONDE TAH SENDO USADO
     public static final int COL_TRAILER_KEY = 1;
     public static final String REVIEW_CHANGED = "review_changed";
     public static final int COL_REVIEW_ID = 0;
@@ -70,11 +70,12 @@ public class DetailFragment extends Fragment implements IDetailView {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         Bundle args = getArguments();
-        Uri uri = null;
+        Uri uri = null; //TODO PASSAR ARGS E DEPOIS VERIFICAR
         if (args!=null && args.getParcelable(ARG_MOVIE_URI)!=null) {
             uri = args.getParcelable(ARG_MOVIE_URI);
         }
         mPresenter = new DetailPresenter(this, getContext(), getLoaderManager(), uri);
+//        getClass().newInstance()
         mPresenter.onCreate();
     }
 
@@ -131,13 +132,9 @@ public class DetailFragment extends Fragment implements IDetailView {
                 }
             }
         });
-        if(null==mMovie) {
-            this.favoriteCheckBox.setVisibility(View.GONE);
-            this.trailerProgressBar.setVisibility(View.GONE);
-            this.reviewProgressBar.setVisibility(View.GONE);
-        }
         return rootView;
     }
+
     @Override
     public void showMovie(Movie movie) {
         mMovie = movie;
